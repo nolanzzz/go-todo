@@ -20,3 +20,7 @@ func Success(c *gin.Context, msg string, data interface{}) {
 func Fail(c *gin.Context, msg string, data interface{}) {
 	respJson(c, http.StatusBadRequest, msg, data)
 }
+
+func NotFound(c *gin.Context, msg string, data interface{}) {
+	respJson(c, http.StatusNotFound, msg, data)
+}
