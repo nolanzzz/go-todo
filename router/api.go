@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	v1 "todo/api/v1"
+	"todo/api/v1"
 )
 
 type Router struct{}
@@ -15,8 +15,7 @@ func InitApiRouter() *gin.Engine {
 		todoGroup.POST("/", TodoApi.CreateTodo)
 		todoGroup.GET("/", TodoApi.FetchAllTodos)
 		todoGroup.GET("/:id", TodoApi.FetchSingleTodo)
-		//todoGroup.PUT("/:id", updateTodo)
-		//todoGroup.DELETE("/:id", deleteTodo)
+		todoGroup.PUT("/:id", TodoApi.UpdateTodo)
 	}
 	return router
 }

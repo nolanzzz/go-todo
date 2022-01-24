@@ -40,9 +40,9 @@ func (s *TodoService) FetchAllTodoItems() ([]model.TodoResponseModel, error) {
 func (s *TodoService) FetchTodoItem(id string) (model.TodoResponseModel, error) {
 	var item model.TodoModel
 	var resp model.TodoResponseModel
-	res := global.DB.First(&item, id)
-	if res.Error != nil {
-		return resp, res.Error
+	global.DB.First(&item, id)
+	if global.DB.Error != nil {
+		return resp, global.DB.Error
 	}
 	completed := false
 	if item.Completed == 1 {

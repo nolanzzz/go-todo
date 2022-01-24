@@ -19,7 +19,8 @@ func (t *TodoApi) CreateTodo(c *gin.Context) {
 	}
 	err := service.TodoServiceApp.AddTodoItem(todo)
 	if err != nil {
-		panic(fmt.Sprintf("Save new item failed: %v", err.Error()))
+		response.Fail(c, "Save new item failed: "+err.Error(), nil)
+		return
 	}
 	response.Success(c, "Todo item created successfully!", gin.H{"resourceId": todo.ID})
 }
@@ -27,10 +28,12 @@ func (t *TodoApi) CreateTodo(c *gin.Context) {
 func (t *TodoApi) FetchAllTodos(c *gin.Context) {
 	todos, err := service.TodoServiceApp.FetchAllTodoItems()
 	if err != nil {
-		panic("Fetch all items failed")
+		response.Fail(c, "Fetch all items failed :"+err.Error(), nil)
+		return
 	}
 	if len(todos) < 1 {
 		response.NotFound(c, "No todo found!", nil)
+		return
 	} else {
 		response.Success(c, "Todos fetched!", todos)
 	}
@@ -40,7 +43,17 @@ func (t *TodoApi) FetchSingleTodo(c *gin.Context) {
 	id := c.Param("id")
 	item, err := service.TodoServiceApp.FetchTodoItem(id)
 	if err != nil {
-		panic(fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()))
+		response.Fail(c, fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()), nil)
+		return
+	}
+	// Not found
+	if item.ID == 0 {
+		response.NotFound(c, "Item with id "+id+" not found!", nil)
+		return
 	}
 	response.Success(c, "Todo found!", item)
+}
+
+func (t *TodoApi) UpdateTodo(c *gin.Context) {
+
 }
