@@ -15,7 +15,7 @@ func InitApiRouter() *gin.Engine {
 		todoGroup.POST("/", TodoApi.CreateTodo)
 		todoGroup.GET("/", TodoApi.FetchAllTodos)
 		todoGroup.GET("/:id", TodoApi.FetchSingleTodo)
-		todoGroup.PUT("/:id", TodoApi.UpdateTodo)
+		//todoGroup.PUT("/:id", TodoApi.UpdateTodo)
 	}
 	return router
 }

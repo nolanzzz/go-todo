@@ -3,16 +3,22 @@ package v1
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"strconv"
 	"todo/common/response"
+	"todo/model"
 	"todo/service"
 )
 
 type TodoApi struct{}
 
 func (t *TodoApi) CreateTodo(c *gin.Context) {
-	completed, _ := strconv.Atoi(c.PostForm("completed"))
-	id, err := service.TodoServiceApp.AddTodoItem(c.PostForm("title"), completed)
+	todo := model.TodoModel{}
+	err := c.ShouldBindJSON(&todo)
+	if err != nil {
+		response.Fail(c, "Save new item failed: "+err.Error(), nil)
+		return
+	}
+	var id uint
+	id, err = service.TodoServiceApp.AddTodoItem(&todo)
 	if err != nil {
 		response.Fail(c, "Save new item failed: "+err.Error(), nil)
 		return
@@ -48,3 +54,8 @@ func (t *TodoApi) FetchSingleTodo(c *gin.Context) {
 	}
 	response.Success(c, "Todo found!", item)
 }
+
+//func (t *TodoApi) UpdateTodo(c *gin.Context) {
+//	id := c.Param("id")
+//
+//}
