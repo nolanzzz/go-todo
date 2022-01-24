@@ -3,7 +3,6 @@ package initialize
 import (
 	"github.com/jinzhu/gorm"
 	"log"
-	"os"
 	"todo/model"
 )
 
@@ -19,11 +18,10 @@ func Gorm() *gorm.DB {
 
 // RegisterTables - Migrate database tables
 func RegisterTables(db *gorm.DB) {
-	err := db.AutoMigrate(
+	db.AutoMigrate(
 		&model.TodoModel{},
 	)
-	if err != nil {
-		log.Fatal("register table failed")
-		os.Exit(0)
+	if db.Error != nil {
+		log.Fatal("register table failed: ", db.Error)
 	}
 }
