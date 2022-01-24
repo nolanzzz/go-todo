@@ -3,8 +3,8 @@ package v1
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
+	"todo/common/response"
 	"todo/model"
 	"todo/service"
 )
@@ -21,11 +21,7 @@ func (t *TodoApi) CreateTodo(c *gin.Context) {
 	if err != nil {
 		panic(fmt.Sprintf("Save new item failed: %v", err.Error()))
 	}
-	c.JSON(http.StatusCreated, gin.H{
-		"status":     http.StatusCreated,
-		"message":    "Todo item created successfully!",
-		"resourceId": todo.ID,
-	})
+	response.Success(c, "Todo item created successfully!", gin.H{"resourceId": todo.ID})
 }
 
 func (t *TodoApi) FetchAllTodos(c *gin.Context) {
@@ -34,15 +30,9 @@ func (t *TodoApi) FetchAllTodos(c *gin.Context) {
 		panic("Fetch all items failed")
 	}
 	if len(todos) < 1 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":  http.StatusNotFound,
-			"message": "No todo found!",
-		})
+		response.NotFound(c, "No todo found!", nil)
 	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"status": http.StatusOK,
-			"data":   todos,
-		})
+		response.Success(c, "Todos fetched!", todos)
 	}
 }
 
@@ -52,4 +42,5 @@ func (t *TodoApi) FetchSingleTodo(c *gin.Context) {
 	if err != nil {
 		panic(fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()))
 	}
+	response.Success(c, "Todo found!", item)
 }

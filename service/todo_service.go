@@ -44,4 +44,10 @@ func (s *TodoService) FetchTodoItem(id string) (model.TodoResponseModel, error) 
 	if res.Error != nil {
 		return resp, res.Error
 	}
+	completed := false
+	if item.Completed == 1 {
+		completed = true
+	}
+	resp = model.TodoResponseModel{ID: item.ID, Title: item.Title, Completed: completed}
+	return resp, nil
 }
