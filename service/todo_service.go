@@ -9,9 +9,13 @@ type TodoService struct{}
 
 var TodoServiceApp = new(TodoService)
 
-func (s *TodoService) AddTodoItem(todo model.TodoModel) error {
-	res := global.DB.Save(&todo)
-	return res.Error
+func (s *TodoService) AddTodoItem(title string, completed int) (uint, error) {
+	todo := model.TodoModel{
+		Title:     title,
+		Completed: completed,
+	}
+	global.DB.Save(&todo)
+	return todo.ID, global.DB.Error
 }
 
 func (s *TodoService) FetchAllTodoItems() ([]model.TodoResponseModel, error) {
@@ -50,4 +54,8 @@ func (s *TodoService) FetchTodoItem(id string) (model.TodoResponseModel, error) 
 	}
 	resp = model.TodoResponseModel{ID: item.ID, Title: item.Title, Completed: completed}
 	return resp, nil
+}
+
+func (s *TodoService) UpdateTodoItem(id string) error {
+
 }
