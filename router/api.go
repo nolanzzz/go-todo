@@ -11,11 +11,10 @@ func InitApiRouter() *gin.Engine {
 	router := gin.Default()
 	todoGroup := router.Group("/app/controller/todos")
 	{
-		Todo := &controller.TodoController{}
-		todoGroup.POST("/", Todo.Store)
-		todoGroup.GET("/", Todo.All)
-		todoGroup.GET("/:id", Todo.Show)
-		todoGroup.PUT("/:id", Todo.Update)
+		todoGroup.POST("/", controller.Todo.Store)
+		todoGroup.GET("/", controller.Todo.All)
+		todoGroup.GET("/:id", controller.Todo.Show)
+		todoGroup.PUT("/:id", controller.Todo.Update)
 	}
 	return router
 }

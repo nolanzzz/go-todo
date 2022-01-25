@@ -10,6 +10,8 @@ import (
 
 type TodoController struct{}
 
+var Todo *TodoController
+
 func (t *TodoController) Store(context *gin.Context) {
 	item := model.TodoModel{}
 	err := context.ShouldBindJSON(&item)
