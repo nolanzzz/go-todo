@@ -5,22 +5,22 @@ import (
 	"net/http"
 )
 
-func respJson(c *gin.Context, httpCode int, msg string, data interface{}) {
-	c.JSON(httpCode, gin.H{
+func respJson(context *gin.Context, httpCode int, msg string, data interface{}) {
+	context.JSON(httpCode, gin.H{
 		"status": httpCode,
 		"data":   data,
 		"msg":    msg,
 	})
 }
 
-func Success(c *gin.Context, msg string, data interface{}) {
-	respJson(c, http.StatusOK, msg, data)
+func Success(context *gin.Context, msg string, data interface{}) {
+	respJson(context, http.StatusOK, msg, data)
 }
 
-func Fail(c *gin.Context, msg string, data interface{}) {
-	respJson(c, http.StatusBadRequest, msg, data)
+func Fail(context *gin.Context, msg string, data interface{}) {
+	respJson(context, http.StatusBadRequest, msg, data)
 }
 
-func NotFound(c *gin.Context, msg string, data interface{}) {
-	respJson(c, http.StatusNotFound, msg, data)
+func NotFound(context *gin.Context, msg string, data interface{}) {
+	respJson(context, http.StatusNotFound, msg, data)
 }
