@@ -1,24 +1,24 @@
-package v1
+package controller
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"todo/common/response"
 	"todo/model"
-	"todo/service"
+	"todo/service/todo"
 )
 
 type TodoApi struct{}
 
-func (t *TodoApi) CreateTodo(c *gin.Context) {
-	todo := model.TodoModel{}
-	err := c.ShouldBindJSON(&todo)
+func (t *TodoApi) Store(c *gin.Context) {
+	item := model.TodoModel{}
+	err := c.ShouldBindJSON(&item)
 	if err != nil {
 		response.Fail(c, "Save new item failed: "+err.Error(), nil)
 		return
 	}
 	var id uint
-	id, err = service.TodoServiceApp.AddTodoItem(&todo)
+	id, err = todo.TodoServiceApp.Store(&item)
 	if err != nil {
 		response.Fail(c, "Save new item failed: "+err.Error(), nil)
 		return
@@ -26,8 +26,8 @@ func (t *TodoApi) CreateTodo(c *gin.Context) {
 	response.Success(c, "Todo item created successfully!", gin.H{"resourceId": id})
 }
 
-func (t *TodoApi) FetchAllTodos(c *gin.Context) {
-	todos, err := service.TodoServiceApp.FetchAllTodoItems()
+func (t *TodoApi) All(c *gin.Context) {
+	todos, err := todo.TodoServiceApp.All()
 	if err != nil {
 		response.Fail(c, "Fetch all items failed :"+err.Error(), nil)
 		return
@@ -40,9 +40,9 @@ func (t *TodoApi) FetchAllTodos(c *gin.Context) {
 	}
 }
 
-func (t *TodoApi) FetchSingleTodo(c *gin.Context) {
+func (t *TodoApi) Show(c *gin.Context) {
 	id := c.Param("id")
-	item, err := service.TodoServiceApp.FetchTodoItem(id)
+	item, err := todo.TodoServiceApp.Show(id)
 	if err != nil {
 		response.Fail(c, fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()), nil)
 		return
@@ -55,7 +55,14 @@ func (t *TodoApi) FetchSingleTodo(c *gin.Context) {
 	response.Success(c, "Todo found!", item)
 }
 
-//func (t *TodoApi) UpdateTodo(c *gin.Context) {
-//	id := c.Param("id")
-//
-//}
+func (t *TodoApi) Update(c *gin.Context) {
+	//id := c.Param("id")
+
+	item := model.TodoModel{}
+	err := c.ShouldBindJSON(&item)
+	if err != nil {
+		response.Fail(c, "Update todo failed: "+err.Error(), nil)
+		return
+	}
+
+}

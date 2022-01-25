@@ -1,4 +1,4 @@
-package service
+package todo
 
 import (
 	"todo/global"
@@ -9,12 +9,12 @@ type TodoService struct{}
 
 var TodoServiceApp = new(TodoService)
 
-func (s *TodoService) AddTodoItem(todo *model.TodoModel) (uint, error) {
+func (s *TodoService) Store(todo *model.TodoModel) (uint, error) {
 	global.DB.Save(todo)
 	return todo.ID, global.DB.Error
 }
 
-func (s *TodoService) FetchAllTodoItems() ([]model.TodoResponseModel, error) {
+func (s *TodoService) All() ([]model.TodoResponseModel, error) {
 	var items []model.TodoModel
 	var _items []model.TodoResponseModel
 	result := global.DB.Find(&items)
@@ -37,7 +37,7 @@ func (s *TodoService) FetchAllTodoItems() ([]model.TodoResponseModel, error) {
 	return _items, nil
 }
 
-func (s *TodoService) FetchTodoItem(id string) (model.TodoResponseModel, error) {
+func (s *TodoService) Show(id string) (model.TodoResponseModel, error) {
 	var item model.TodoModel
 	var resp model.TodoResponseModel
 	global.DB.First(&item, id)
@@ -52,7 +52,6 @@ func (s *TodoService) FetchTodoItem(id string) (model.TodoResponseModel, error) 
 	return resp, nil
 }
 
-//
-//func (s *TodoService) UpdateTodoItem(id string) error {
-//
+//func (s *TodoService) UpdateTodoItem(todo *model.TodoModel) error {
+//	//global.
 //}

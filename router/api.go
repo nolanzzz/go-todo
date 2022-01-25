@@ -2,20 +2,20 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"todo/api/v1"
+	"todo/http/controller"
 )
 
 type Router struct{}
 
 func InitApiRouter() *gin.Engine {
 	router := gin.Default()
-	todoGroup := router.Group("/api/v1/todos")
+	todoGroup := router.Group("/app/controller/todos")
 	{
-		TodoApi := &v1.TodoApi{}
-		todoGroup.POST("/", TodoApi.CreateTodo)
-		todoGroup.GET("/", TodoApi.FetchAllTodos)
-		todoGroup.GET("/:id", TodoApi.FetchSingleTodo)
-		//todoGroup.PUT("/:id", TodoApi.UpdateTodo)
+		TodoApi := &controller.TodoApi{}
+		todoGroup.POST("/", TodoApi.Store)
+		todoGroup.GET("/", TodoApi.All)
+		todoGroup.GET("/:id", TodoApi.Show)
+		todoGroup.PUT("/:id", TodoApi.Update)
 	}
 	return router
 }
