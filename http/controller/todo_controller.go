@@ -3,9 +3,9 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"todo/common/response"
-	"todo/model"
-	"todo/service/todo"
+	"todo/service/todo_service"
 )
 
 type TodoController struct{}
@@ -13,29 +13,34 @@ type TodoController struct{}
 var Todo *TodoController
 
 func (t *TodoController) Store(context *gin.Context) {
-	item := model.TodoModel{}
-	err := context.ShouldBindJSON(&item)
-	if err != nil {
-		response.Fail(context, "Save new item failed: "+err.Error(), nil)
-		return
+	title := context.PostForm("title")
+	description := context.PostForm("description")
+	if err := todo_service.TodoServiceApp.Store(title, description); err != nil {
+		response.Fail(context, "Add new item failed: "+err.Error(), nil)
+	} else {
+		response.Success(context, "Successfully added new TODO item.", nil)
 	}
-	var id uint
-	id, err = todo.TodoServiceApp.Store(&item)
-	if err != nil {
-		response.Fail(context, "Save new item failed: "+err.Error(), nil)
-		return
+}
+
+func (t *TodoController) Update(context *gin.Context) {
+	id, _ := strconv.Atoi(context.Param("id"))
+	title := context.PostForm("title")
+	description := context.PostForm("description")
+	if err := todo_service.TodoServiceApp.Update(id, title, description); err != nil {
+		response.Fail(context, "Update item failed: "+err.Error(), nil)
+	} else {
+		response.Success(context, "Update item successful.", nil)
 	}
-	response.Success(context, "Todo item created successfully!", gin.H{"resourceId": id})
 }
 
 func (t *TodoController) All(context *gin.Context) {
-	todos, err := todo.TodoServiceApp.All()
+	todos, err := todo_service.TodoServiceApp.All()
 	if err != nil {
 		response.Fail(context, "Fetch all items failed :"+err.Error(), nil)
 		return
 	}
 	if len(todos) < 1 {
-		response.NotFound(context, "No todo found!", nil)
+		response.NotFound(context, "No todo_service found!", nil)
 		return
 	} else {
 		response.Success(context, "Todos fetched!", todos)
@@ -44,7 +49,7 @@ func (t *TodoController) All(context *gin.Context) {
 
 func (t *TodoController) Show(context *gin.Context) {
 	id := context.Param("id")
-	item, err := todo.TodoServiceApp.Show(id)
+	item, err := todo_service.TodoServiceApp.Show(id)
 	if err != nil {
 		response.Fail(context, fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()), nil)
 		return
@@ -55,16 +60,4 @@ func (t *TodoController) Show(context *gin.Context) {
 		return
 	}
 	response.Success(context, "Todo found!", item)
-}
-
-func (t *TodoController) Update(context *gin.Context) {
-	//id := c.Param("id")
-
-	item := model.TodoModel{}
-	err := context.ShouldBindJSON(&item)
-	if err != nil {
-		response.Fail(context, "Update todo failed: "+err.Error(), nil)
-		return
-	}
-
 }
