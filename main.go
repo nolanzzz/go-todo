@@ -15,6 +15,6 @@ func init() {
 }
 
 func main() {
-	router := router.InitApiRouter()
-	router.Run(":8080")
+	r := router.InitApiRouter()
+	r.Run(":8080")
 }
