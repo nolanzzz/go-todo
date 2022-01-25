@@ -9,7 +9,7 @@ type Router struct{}
 
 func InitApiRouter() *gin.Engine {
 	router := gin.Default()
-	todoGroup := router.Group("/app/controller/todos")
+	todoGroup := router.Group("/api/v1/todo")
 	{
 		todoGroup.POST("/", controller.Todo.Store)
 		todoGroup.GET("/", controller.Todo.All)

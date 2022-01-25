@@ -7,7 +7,7 @@ import (
 type TodoModel struct {
 	gorm.Model
 	Title       string `json:"title" gorm:"not null"`
-	Description string `json:"description"`
+	Description string `json:"description" gorm:"null"`
 	Completed   int    `json:"completed" gorm:"default:0"`
 	TimeSpent   int    `json:"time_spent" gorm:"comment:'Total minutes spent'"`
 }
