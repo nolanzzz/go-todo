@@ -20,6 +20,7 @@ func Gorm() *gorm.DB {
 func RegisterTables(db *gorm.DB) {
 	db.AutoMigrate(
 		&model.Todo{},
+		&model.User{},
 	)
 	if db.Error != nil {
 		log.Fatal("register table failed: ", db.Error)
