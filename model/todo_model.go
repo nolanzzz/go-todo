@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type TodoModel struct {
+type Todo struct {
 	gorm.Model
 	Title       string `json:"title" gorm:"not null"`
 	Description string `json:"description" gorm:"null"`
@@ -12,7 +12,7 @@ type TodoModel struct {
 	TimeSpent   int    `json:"time_spent" gorm:"comment:'Total minutes spent'"`
 }
 
-type TodoResponseModel struct {
+type TodoResponse struct {
 	ID          uint   `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`

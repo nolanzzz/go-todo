@@ -11,7 +11,7 @@ type TodoService struct{}
 var TodoServiceApp = new(TodoService)
 
 func (s *TodoService) Store(title string, description string) error {
-	item := model.TodoModel{
+	item := model.Todo{
 		Title:       title,
 		Description: description,
 	}
@@ -20,38 +20,38 @@ func (s *TodoService) Store(title string, description string) error {
 }
 
 func (s *TodoService) Update(id int, title string, description string) error {
-	res := global.DB.Model(&model.TodoModel{}).
+	res := global.DB.Model(&model.Todo{}).
 		Where("id = ?", id).
-		Update(model.TodoModel{Title: title, Description: description})
+		Update(model.Todo{Title: title, Description: description})
 	if res.RowsAffected < 1 {
 		return errors.New("record not found")
 	}
 	return res.Error
 }
 
-func (s *TodoService) All() ([]model.TodoResponseModel, error) {
-	var items []model.TodoModel
-	var resps []model.TodoResponseModel
+func (s *TodoService) All() ([]model.TodoResponse, error) {
+	var items []model.Todo
+	var resps []model.TodoResponse
 	res := global.DB.Find(&items)
 	if res.Error != nil {
 		return nil, res.Error
 	}
 	if len(items) == 0 {
-		return []model.TodoResponseModel{}, nil
+		return []model.TodoResponse{}, nil
 	}
 	// 对todo的属性做一些转换以构建更好的响应体
 	for _, item := range items {
-		resps = append(resps, model.TodoResponseModel{ID: item.ID, Title: item.Title, Completed: item.Completed})
+		resps = append(resps, model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed})
 	}
 	return resps, nil
 }
 
-func (s *TodoService) Show(id string) (model.TodoResponseModel, error) {
-	var item model.TodoModel
-	var resp model.TodoResponseModel
+func (s *TodoService) Show(id string) (model.TodoResponse, error) {
+	var item model.Todo
+	var resp model.TodoResponse
 	if err := global.DB.First(&item, id).Error; err != nil {
 		return resp, err
 	}
-	resp = model.TodoResponseModel{ID: item.ID, Title: item.Title, Completed: item.Completed}
+	resp = model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed}
 	return resp, nil
 }
