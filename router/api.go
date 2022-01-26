@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"todo/http/controller"
+	controller2 "todo/controller"
 )
 
 type Router struct{}
@@ -12,15 +12,15 @@ func InitApiRouter() *gin.Engine {
 	v1 := router.Group("/api/v1")
 	todoGroup := v1.Group("/todo")
 	{
-		todoGroup.POST("/", controller.Todo.Store)
-		todoGroup.GET("/", controller.Todo.All)
-		todoGroup.GET("/:id", controller.Todo.Show)
-		todoGroup.PUT("/:id", controller.Todo.Update)
+		todoGroup.POST("/", controller2.Todo.Store)
+		todoGroup.GET("/", controller2.Todo.All)
+		todoGroup.GET("/:id", controller2.Todo.Show)
+		todoGroup.PUT("/:id", controller2.Todo.Update)
 	}
 
 	usersGroup := v1.Group("/users")
 	{
-		usersGroup.POST("/", controller.User.Register)
+		usersGroup.POST("/", controller2.User.Register)
 	}
 
 	return router
