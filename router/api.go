@@ -20,7 +20,7 @@ func InitApiRouter() *gin.Engine {
 
 	usersGroup := v1.Group("/users")
 	{
-		usersGroup.POST("/", controller2.User.Register)
+		usersGroup.POST("/register", controller2.User.Register)
 	}
 
 	return router
