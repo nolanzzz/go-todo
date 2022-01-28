@@ -2,7 +2,10 @@ package user_service
 
 import (
 	"errors"
+	"github.com/dgrijalva/jwt-go"
+	"strconv"
 	"todo/common/hash"
+	"todo/common/jwt_helper"
 	"todo/global"
 	"todo/model"
 )
@@ -33,13 +36,32 @@ func (u *UserService) Register(username, password string) error {
 	return err
 }
 
-func (u *UserService) Login(username, password string) error {
+func (u *UserService) Login(username, password string) (string, error) {
 	user, err := u.GetUserByUsername(username)
 	if err != nil {
-		return err
+		return "", err
+	}
+	if user.ID == 0 {
+		return "", errors.New("user not found")
 	}
 	// Check password
-	return hash.NewHash().Check([]byte(user.Password), []byte(password))
+	err = hash.NewHash().Check([]byte(user.Password), []byte(password))
+	if err != nil {
+		return "", errors.New("wrong password")
+	}
+
+	// JWT
+	claims := jwt_helper.Claims{
+		Username:       user.Username,
+		Wid:            strconv.Itoa(int(user.ID)),
+		StandardClaims: jwt.StandardClaims{},
+	}
+	// Generate token
+	token, err := jwt_helper.Encode(claims, jwt_helper.Key)
+	if err != nil {
+		return "", errors.New("generating token failed")
+	}
+	return token, nil
 }
 
 func (u *UserService) GetUserByUsername(username string) (model.User, error) {

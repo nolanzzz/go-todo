@@ -23,9 +23,10 @@ func (u *UserController) Register(context *gin.Context) {
 func (u *UserController) Login(context *gin.Context) {
 	username := context.PostForm("username")
 	password := context.PostForm("password")
-	if err := user_service.UserServiceApp.Login(username, password); err != nil {
+	token, err := user_service.UserServiceApp.Login(username, password)
+	if err != nil {
 		response.Fail(context, "Login failed, please confirm your username and password", nil)
 		return
 	}
-	response.Success(context, "Login succeed", nil)
+	response.Success(context, "Login succeed", gin.H{"token": token})
 }
