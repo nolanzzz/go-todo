@@ -21,6 +21,7 @@ func InitApiRouter() *gin.Engine {
 	usersGroup := v1.Group("/users")
 	{
 		usersGroup.POST("/register", controller2.User.Register)
+		usersGroup.POST("/login", controller2.User.Login)
 	}
 
 	return router

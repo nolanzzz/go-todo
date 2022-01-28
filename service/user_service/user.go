@@ -32,3 +32,18 @@ func (u *UserService) Register(username, password string) error {
 	err = global.DB.Create(&user).Error
 	return err
 }
+
+func (u *UserService) Login(username, password string) error {
+	user, err := u.GetUserByUsername(username)
+	if err != nil {
+		return err
+	}
+	// Check password
+	return hash.NewHash().Check([]byte(user.Password), []byte(password))
+}
+
+func (u *UserService) GetUserByUsername(username string) (model.User, error) {
+	user := model.User{}
+	err := global.DB.Where("username = ?", username).Find(&user).Error
+	return user, err
+}
