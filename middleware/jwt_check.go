@@ -11,13 +11,13 @@ func JwtCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader("Authorization")
 		if header == "" {
-			response.Unauthorized(c, "no authorization", nil)
+			response.Unauthorized(c, "unauthorized", nil)
 			c.Abort()
 			return
 		}
 		split := strings.Split(header, " ")
 		if split[0] != "Bearer" && split[1] == "" {
-			response.Unauthorized(c, "cannot access", nil)
+			response.Unauthorized(c, "invalid authorization", nil)
 			c.Abort()
 			return
 		}
