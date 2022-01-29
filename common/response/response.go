@@ -25,6 +25,6 @@ func NotFound(context *gin.Context, msg string, data interface{}) {
 	respJson(context, http.StatusNotFound, msg, data)
 }
 
-func TokenError(context *gin.Context, msg string, data interface{}) {
-	respJson(context, http.StatusUnprocessableEntity, msg, data)
+func Unauthorized(context *gin.Context, msg string, data interface{}) {
+	respJson(context, http.StatusUnauthorized, msg, data)
 }
