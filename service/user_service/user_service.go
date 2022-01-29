@@ -57,7 +57,7 @@ func (u *UserService) Login(username, password string) (string, error) {
 		StandardClaims: jwt.StandardClaims{},
 	}
 	// Generate token
-	token, err := jwt_helper.Encode(claims, jwt_helper.Key)
+	token, err := jwt_helper.Encode(claims)
 	if err != nil {
 		return "", errors.New("generating token failed")
 	}

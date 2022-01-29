@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	Key    []byte
-	Expire int64
+	key    []byte
+	expire int64
 )
 
 type Claims struct {
@@ -18,34 +18,34 @@ type Claims struct {
 }
 
 func init() {
-	Key = []byte("sockstack")
-	Expire = 7200
+	key = []byte("sockstack")
+	expire = 7200
 }
 
-func Encode(c Claims, keys []byte) (string, error) {
+func Encode(c Claims) (string, error) {
 	if c.ExpiresAt == 0 {
-		c.ExpiresAt = time.Now().Unix() + Expire
+		c.ExpiresAt = time.Now().Unix() + expire
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
 	// Sign and get the complete encoded token as a string using the secret
-	if keys != nil {
-		Key = keys
-	}
-	return token.SignedString(Key)
+	//if keys != nil {
+	//	key = keys
+	//}
+	return token.SignedString(key)
 }
 
-func Decode(s string, keys []byte) (*Claims, error) {
+func Decode(s string) (*Claims, error) {
 	var err error
 	// sample token is expired. override time so it parses as valid
-	if keys != nil {
-		Key = keys
-	}
+	//if keys != nil {
+	//	key = keys
+	//}
 	if s == "" {
 		return &Claims{}, errors.New("empty token")
 	}
 	token, err := jwt.ParseWithClaims(s, &Claims{}, func(token *jwt.Token) (i interface{}, err error) {
-		return Key, nil
+		return key, nil
 	})
 	if err != nil {
 		return &Claims{}, err

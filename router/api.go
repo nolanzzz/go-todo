@@ -2,7 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	controller2 "todo/controller"
+	"todo/controller"
+	"todo/middleware"
 )
 
 type Router struct{}
@@ -10,18 +11,20 @@ type Router struct{}
 func InitApiRouter() *gin.Engine {
 	router := gin.Default()
 	v1 := router.Group("/api/v1")
-	todoGroup := v1.Group("/todo")
+	todo := v1.Group("/todo").Use(middleware.JwtCheck())
 	{
-		todoGroup.POST("/", controller2.Todo.Store)
-		todoGroup.GET("/", controller2.Todo.All)
-		todoGroup.GET("/:id", controller2.Todo.Show)
-		todoGroup.PUT("/:id", controller2.Todo.Update)
+		todo.GET("/", controller.Todo.All)
+		todo.GET("/:id", controller.Todo.Show)
+
+		todoAuth := todo.Use(middleware.JwtCheck())
+		todoAuth.POST("/", controller.Todo.Store)
+		todoAuth.PUT("/:id", controller.Todo.Update)
 	}
 
-	usersGroup := v1.Group("/users")
+	users := v1.Group("/users")
 	{
-		usersGroup.POST("/register", controller2.User.Register)
-		usersGroup.POST("/login", controller2.User.Login)
+		users.POST("/register", controller.User.Register)
+		users.POST("/login", controller.User.Login)
 	}
 
 	return router
