@@ -1,0 +1,109 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/todo": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Get all todo tasks",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"Todos fetched!\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Create new todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"Successfully added new TODO item.\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/todo/:id": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Get one todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{\"item\":{}},\"msg\":\"Todo found!\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Update an existing todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"Update item successful.\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/todo/by/:userID": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Get all todo tasks of a specific user",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"Fetch user's items succeed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

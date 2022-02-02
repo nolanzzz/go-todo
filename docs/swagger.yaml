@@ -1,0 +1,68 @@
+info:
+  contact: {}
+paths:
+  /api/v1/todo:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"items":{}},"msg":"Todos fetched!"}'
+          schema:
+            type: string
+      summary: Get all todo tasks
+      tags:
+      - Todo
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"Successfully added new TODO
+            item."}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create new todo task
+      tags:
+      - Todo
+  /api/v1/todo/:id:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"item":{}},"msg":"Todo found!"}'
+          schema:
+            type: string
+      summary: Get one todo task
+      tags:
+      - Todo
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"Update item successful."}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing todo task
+      tags:
+      - Todo
+  /api/v1/todo/by/:userID:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"items":{}},"msg":"Fetch user''s items
+            succeed"}'
+          schema:
+            type: string
+      summary: Get all todo tasks of a specific user
+      tags:
+      - Todo
+swagger: "2.0"
