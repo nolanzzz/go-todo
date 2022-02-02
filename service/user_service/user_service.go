@@ -14,24 +14,18 @@ type UserService struct{}
 
 var UserServiceApp = new(UserService)
 
-func (u *UserService) Register(username, password string) error {
+func (u *UserService) Register(user model.User) error {
 	// Check if username name exists
-	var users []model.User
-	if err := global.DB.Where("username = ?", username).Find(&users).Error; err != nil {
-		return err
-	}
-	if len(users) > 0 {
+	checkUser, err := u.GetUserByUsername(user.Username)
+	if err == nil || checkUser.ID != 0 {
 		return errors.New("username already used")
 	}
 	// Generate encrypted password
-	hashed, err := hash.NewHash().Make([]byte(password))
+	hashed, err := hash.NewHash().Make([]byte(user.Password))
 	if err != nil {
 		return err
 	}
-	user := model.User{
-		Username: username,
-		Password: string(hashed),
-	}
+	user.Password = string(hashed)
 	err = global.DB.Create(&user).Error
 	return err
 }
