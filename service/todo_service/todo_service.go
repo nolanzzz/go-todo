@@ -45,20 +45,27 @@ func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) GetUserAll(userID uint) ([]model.TodoResponse, error) {
+func (s *TodoService) GetUserAll(userID string) ([]model.TodoResponse, error) {
+	var items []model.Todo
 	user := &model.User{}
 	err := global.DB.Find(&user, "id = ?", userID).Error
 	if err != nil {
 		return nil, err
 	}
-	return s.todoResponses(user.Todos), nil
+	global.DB.Model(user).Related(&items)
+	return s.todoResponses(items), nil
 }
 
 func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 	var responses []model.TodoResponse
 	// 对todo的属性做一些转换以构建更好的响应体
 	for _, item := range items {
-		responses = append(responses, model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed})
+		responses = append(responses, model.TodoResponse{
+			ID:          item.ID,
+			Title:       item.Title,
+			Description: item.Description,
+			Completed:   item.Completed,
+		})
 	}
 	return responses
 }

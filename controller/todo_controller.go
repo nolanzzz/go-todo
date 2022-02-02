@@ -69,7 +69,7 @@ func (t *TodoController) GetAll(context *gin.Context) {
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Fetch user's items succeed"}"
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoController) GetUserAll(context *gin.Context) {
-	userID := context.GetUint("user_id")
+	userID := context.Param("userID")
 	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
 		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
