@@ -2,6 +2,7 @@ package todo_service
 
 import (
 	"errors"
+	"log"
 	"todo/global"
 	"todo/model"
 )
@@ -10,11 +11,14 @@ type TodoService struct{}
 
 var TodoServiceApp = new(TodoService)
 
-func (s *TodoService) Create(title string, description string) error {
+func (s *TodoService) Create(userID uint, title string, description string) error {
+	log.Println("Arg UserID", userID)
 	item := model.Todo{
 		Title:       title,
 		Description: description,
+		UserID:      userID,
 	}
+	log.Println("UserID: ", item.UserID)
 	res := global.DB.Save(&item)
 	return res.Error
 }
@@ -41,13 +45,13 @@ func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) GetUserAll(uid string) ([]model.TodoResponse, error) {
-	var items []model.Todo
-	err := global.DB.Find(&items, "user_id = ?", uid).Error
+func (s *TodoService) GetUserAll(userID uint) ([]model.TodoResponse, error) {
+	user := &model.User{}
+	err := global.DB.Find(&user, "id = ?", userID).Error
 	if err != nil {
 		return nil, err
 	}
-	return s.todoResponses(items), nil
+	return s.todoResponses(user.Todos), nil
 }
 
 func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {

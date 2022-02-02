@@ -5,6 +5,8 @@ import (
 	"strings"
 	"todo/common/jwt_helper"
 	"todo/common/response"
+	"todo/global"
+	"todo/model"
 )
 
 func Auth() gin.HandlerFunc {
@@ -27,7 +29,14 @@ func Auth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("user_id", decode.Wid)
+		user := &model.User{}
+		err = global.DB.Find(user, "id = ?", decode.Wid).Error
+		if err != nil || user.ID == 0 {
+			response.NotFound(c, "user not found", nil)
+			c.Abort()
+			return
+		}
+		c.Set("user_id", user.ID)
 		c.Next()
 	}
 }

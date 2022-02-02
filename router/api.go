@@ -17,7 +17,7 @@ func InitApiRouter() *gin.Engine {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := router.Group("/api/v1")
-	todo := v1.Group("/todo").Use(middleware.Auth())
+	todo := v1.Group("/todo")
 	{
 		todo.GET("/:id", controller.Todo.Get)
 		todo.GET("/", controller.Todo.GetAll)
