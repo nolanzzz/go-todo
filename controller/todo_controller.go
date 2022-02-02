@@ -12,10 +12,10 @@ type TodoController struct{}
 
 var Todo *TodoController
 
-func (t *TodoController) Store(context *gin.Context) {
+func (t *TodoController) Create(context *gin.Context) {
 	title := context.PostForm("title")
 	description := context.PostForm("description")
-	if err := todo_service.TodoServiceApp.Store(title, description); err != nil {
+	if err := todo_service.TodoServiceApp.Create(title, description); err != nil {
 		response.Fail(context, "Add new item failed: "+err.Error(), nil)
 	} else {
 		response.Success(context, "Successfully added new TODO item.", nil)
@@ -33,8 +33,8 @@ func (t *TodoController) Update(context *gin.Context) {
 	}
 }
 
-func (t *TodoController) All(context *gin.Context) {
-	todos, err := todo_service.TodoServiceApp.All()
+func (t *TodoController) GetAll(context *gin.Context) {
+	todos, err := todo_service.TodoServiceApp.GetAll()
 	if err != nil {
 		response.Fail(context, "Fetch all items failed :"+err.Error(), nil)
 		return
@@ -42,9 +42,9 @@ func (t *TodoController) All(context *gin.Context) {
 	response.Success(context, "Todos fetched!", todos)
 }
 
-func (t *TodoController) UserAll(context *gin.Context) {
+func (t *TodoController) GetUserAll(context *gin.Context) {
 	uid := context.GetInt("user_id")
-	items, err := todo_service.TodoServiceApp.UserAll(uid)
+	items, err := todo_service.TodoServiceApp.GetUserAll(uid)
 	if err != nil {
 		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
 		return
@@ -52,9 +52,9 @@ func (t *TodoController) UserAll(context *gin.Context) {
 	response.Success(context, "Fetch user's items succeed", gin.H{"items": items})
 }
 
-func (t *TodoController) Show(context *gin.Context) {
+func (t *TodoController) Get(context *gin.Context) {
 	id := context.Param("id")
-	item, err := todo_service.TodoServiceApp.Show(id)
+	item, err := todo_service.TodoServiceApp.Get(id)
 	if err != nil {
 		response.Fail(context, fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()), nil)
 		return

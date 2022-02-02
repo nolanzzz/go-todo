@@ -10,7 +10,7 @@ type TodoService struct{}
 
 var TodoServiceApp = new(TodoService)
 
-func (s *TodoService) Store(title string, description string) error {
+func (s *TodoService) Create(title string, description string) error {
 	item := model.Todo{
 		Title:       title,
 		Description: description,
@@ -29,7 +29,7 @@ func (s *TodoService) Update(id int, title string, description string) error {
 	return res.Error
 }
 
-func (s *TodoService) All() ([]model.TodoResponse, error) {
+func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
 	var items []model.Todo
 	res := global.DB.Find(&items)
 	if res.Error != nil {
@@ -41,7 +41,7 @@ func (s *TodoService) All() ([]model.TodoResponse, error) {
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) UserAll(uid int) ([]model.TodoResponse, error) {
+func (s *TodoService) GetUserAll(uid int) ([]model.TodoResponse, error) {
 	var items []model.Todo
 	err := global.DB.Find(&items, "user_id = ?", uid).Error
 	if err != nil {
@@ -59,7 +59,7 @@ func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 	return responses
 }
 
-func (s *TodoService) Show(id string) (model.TodoResponse, error) {
+func (s *TodoService) Get(id string) (model.TodoResponse, error) {
 	var item model.Todo
 	var resp model.TodoResponse
 	if err := global.DB.First(&item, id).Error; err != nil {
