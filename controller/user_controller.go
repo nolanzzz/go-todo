@@ -10,6 +10,12 @@ type UserController struct{}
 
 var User *UserController
 
+// Register
+// @Tags Users
+// @Summary Register new account
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"Register new user succeed"}"
+// @Router /api/v1/Users/register [post]
 func (u *UserController) Register(context *gin.Context) {
 	username := context.PostForm("username")
 	password := context.PostForm("password")
@@ -20,6 +26,12 @@ func (u *UserController) Register(context *gin.Context) {
 	response.Success(context, "Register new user succeed", nil)
 }
 
+// Login
+// @Tags Users
+// @Summary User login
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{"token":string},"msg":"Login succeed"}"
+// @Router /api/v1/Users/login [post]
 func (u *UserController) Login(context *gin.Context) {
 	username := context.PostForm("username")
 	password := context.PostForm("password")

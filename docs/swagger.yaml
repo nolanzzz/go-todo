@@ -1,6 +1,30 @@
 info:
   contact: {}
 paths:
+  /api/v1/Users/login:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"token":string},"msg":"Login succeed"}'
+          schema:
+            type: string
+      summary: Register new account
+      tags:
+      - Users
+  /api/v1/Users/register:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"Register new user succeed"}'
+          schema:
+            type: string
+      summary: Register new account
+      tags:
+      - Users
   /api/v1/todo:
     get:
       produces:

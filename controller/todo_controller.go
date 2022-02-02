@@ -13,6 +13,7 @@ type TodoController struct{}
 
 var Todo *TodoController
 
+// Create
 // @Tags Todo
 // @Summary Create new todo task
 // @Security ApiKeyAuth
@@ -29,6 +30,7 @@ func (t *TodoController) Create(context *gin.Context) {
 	}
 }
 
+// Update
 // @Tags Todo
 // @Summary Update an existing todo task
 // @Security ApiKeyAuth
@@ -46,6 +48,7 @@ func (t *TodoController) Update(context *gin.Context) {
 	}
 }
 
+// GetAll
 // @Tags Todo
 // @Summary Get all todo tasks
 // @Produce application/json
@@ -60,6 +63,7 @@ func (t *TodoController) GetAll(context *gin.Context) {
 	response.Success(context, "Todos fetched!", gin.H{"items": todos})
 }
 
+// GetUserAll
 // @Tags Todo
 // @Summary Get all todo tasks of a specific user
 // @Produce application/json
@@ -79,6 +83,7 @@ func (t *TodoController) GetUserAll(context *gin.Context) {
 	response.Success(context, "Fetch user's items succeed", gin.H{"items": items})
 }
 
+// Get
 // @Tags Todo
 // @Summary Get one todo task
 // @Produce application/json
