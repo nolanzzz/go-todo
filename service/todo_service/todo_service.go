@@ -41,7 +41,7 @@ func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) GetUserAll(uid int) ([]model.TodoResponse, error) {
+func (s *TodoService) GetUserAll(uid string) ([]model.TodoResponse, error) {
 	var items []model.Todo
 	err := global.DB.Find(&items, "user_id = ?", uid).Error
 	if err != nil {

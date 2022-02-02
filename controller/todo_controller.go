@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"todo/common/response"
@@ -12,6 +11,12 @@ type TodoController struct{}
 
 var Todo *TodoController
 
+// @Tags Todo
+// @Summary Create new todo task
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"Successfully added new TODO item."}"
+// @Router /api/v1/todo [post]
 func (t *TodoController) Create(context *gin.Context) {
 	title := context.PostForm("title")
 	description := context.PostForm("description")
@@ -22,6 +27,12 @@ func (t *TodoController) Create(context *gin.Context) {
 	}
 }
 
+// @Tags Todo
+// @Summary Update an existing todo task
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"Update item successful."}"
+// @Router /api/v1/todo/:id [put]
 func (t *TodoController) Update(context *gin.Context) {
 	id, _ := strconv.Atoi(context.Param("id"))
 	title := context.PostForm("title")
@@ -33,18 +44,28 @@ func (t *TodoController) Update(context *gin.Context) {
 	}
 }
 
+// @Tags Todo
+// @Summary Get all todo tasks
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Todos fetched!"}"
+// @Router /api/v1/todo [get]
 func (t *TodoController) GetAll(context *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
 	if err != nil {
 		response.Fail(context, "Fetch all items failed :"+err.Error(), nil)
 		return
 	}
-	response.Success(context, "Todos fetched!", todos)
+	response.Success(context, "Todos fetched!", gin.H{"items": todos})
 }
 
+// @Tags Todo
+// @Summary Get all todo tasks of a specific user
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Fetch user's items succeed"}"
+// @Router /api/v1/todo/by/:userID [get]
 func (t *TodoController) GetUserAll(context *gin.Context) {
-	uid := context.GetInt("user_id")
-	items, err := todo_service.TodoServiceApp.GetUserAll(uid)
+	userID := context.Param("userID")
+	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
 		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
 		return
@@ -52,11 +73,16 @@ func (t *TodoController) GetUserAll(context *gin.Context) {
 	response.Success(context, "Fetch user's items succeed", gin.H{"items": items})
 }
 
+// @Tags Todo
+// @Summary Get one todo task
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"Todo found!"}"
+// @Router /api/v1/todo/:id [get]
 func (t *TodoController) Get(context *gin.Context) {
 	id := context.Param("id")
 	item, err := todo_service.TodoServiceApp.Get(id)
 	if err != nil {
-		response.Fail(context, fmt.Sprintf("Fetch item %v faild: %v", id, err.Error()), nil)
+		response.Fail(context, "Fetch item "+id+" failed: "+err.Error(), nil)
 		return
 	}
 	// Not found
