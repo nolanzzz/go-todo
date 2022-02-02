@@ -13,26 +13,26 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader("Authorization")
 		if header == "" {
-			response.Unauthorized(c, "unauthorized", nil)
+			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
 		split := strings.Split(header, " ")
 		if split[0] != "Bearer" && split[1] == "" {
-			response.Unauthorized(c, "invalid authorization", nil)
+			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
 		decode, err := jwt_helper.Decode(split[1])
 		if err != nil {
-			response.Unauthorized(c, "decoding token failed: "+err.Error(), nil)
+			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
 		user := &model.User{}
 		err = global.DB.Find(user, "id = ?", decode.Wid).Error
 		if err != nil || user.ID == 0 {
-			response.NotFound(c, "user not found", nil)
+			response.NotFound(c)
 			c.Abort()
 			return
 		}

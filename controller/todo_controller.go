@@ -17,16 +17,16 @@ var Todo *TodoController
 // @Security ApiKeyAuth
 // @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{},"msg":"Successfully added new TODO item."}"
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo create succeed"}"
 // @Router /api/v1/todo [post]
-func (t *TodoController) Create(context *gin.Context) {
+func (t *TodoController) Create(c *gin.Context) {
 	var todo model.Todo
-	_ = context.ShouldBind(&todo)
-	todo.UserID = context.GetUint("user_id")
+	_ = c.ShouldBind(&todo)
+	todo.UserID = c.GetUint("user_id")
 	if err := todo_service.TodoServiceApp.Create(todo); err != nil {
-		response.Fail(context, "Add new item failed: "+err.Error(), nil)
+		response.FailWithMessage(c, "todo create failed")
 	} else {
-		response.Success(context, "Successfully added new TODO item.", nil)
+		response.OkWithMessage(c, "todo create succeed")
 	}
 }
 
@@ -38,13 +38,13 @@ func (t *TodoController) Create(context *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"Update item successful."}"
 // @Router /api/v1/todo [put]
-func (t *TodoController) Update(context *gin.Context) {
+func (t *TodoController) Update(c *gin.Context) {
 	var todo model.Todo
-	_ = context.ShouldBind(&todo)
+	_ = c.ShouldBind(&todo)
 	if err := todo_service.TodoServiceApp.Update(todo); err != nil {
-		response.Fail(context, "Update item failed: "+err.Error(), nil)
+		response.FailWithMessage(c, "todo update failed")
 	} else {
-		response.Success(context, "Update item successful.", nil)
+		response.OkWithMessage(c, "todo update succeed")
 	}
 }
 
@@ -54,13 +54,13 @@ func (t *TodoController) Update(context *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Todos fetched!"}"
 // @Router /api/v1/todo [get]
-func (t *TodoController) GetAll(context *gin.Context) {
+func (t *TodoController) GetAll(c *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
 	if err != nil {
-		response.Fail(context, "Fetch all items failed :"+err.Error(), nil)
+		response.FailWithMessage(c, "todo get all failed")
 		return
 	}
-	response.Success(context, "Todos fetched!", gin.H{"items": todos})
+	response.OkWithData(c, gin.H{"items": todos})
 }
 
 // GetUserAll
@@ -69,14 +69,14 @@ func (t *TodoController) GetAll(context *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Fetch user's items succeed"}"
 // @Router /api/v1/todo/by/:userID [get]
-func (t *TodoController) GetUserAll(context *gin.Context) {
-	userID := context.Param("userID")
+func (t *TodoController) GetUserAll(c *gin.Context) {
+	userID := c.Param("userID")
 	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
-		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
+		response.FailWithMessage(c, "todo get user all failed")
 		return
 	}
-	response.Success(context, "Fetch user's items succeed", gin.H{"items": items})
+	response.OkWithData(c, gin.H{"items": items})
 }
 
 // Get
@@ -85,17 +85,17 @@ func (t *TodoController) GetUserAll(context *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"Todo found!"}"
 // @Router /api/v1/todo/:id [get]
-func (t *TodoController) Get(context *gin.Context) {
-	id := context.Param("id")
+func (t *TodoController) Get(c *gin.Context) {
+	id := c.Param("id")
 	item, err := todo_service.TodoServiceApp.Get(id)
 	if err != nil {
-		response.Fail(context, "Fetch item "+id+" failed: "+err.Error(), nil)
+		response.FailWithMessage(c, "todo get failed")
 		return
 	}
 	// Not found
 	if item.ID == 0 {
-		response.NotFound(context, "Item with id "+id+" not found!", nil)
+		response.NotFound(c)
 		return
 	}
-	response.Success(context, "Todo found!", gin.H{"item": item})
+	response.OkWithData(c, gin.H{"item": item})
 }

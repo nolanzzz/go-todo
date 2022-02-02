@@ -5,26 +5,47 @@ import (
 	"net/http"
 )
 
-func respJson(context *gin.Context, httpCode int, msg string, data interface{}) {
-	context.JSON(httpCode, gin.H{
-		"status": httpCode,
-		"data":   data,
-		"msg":    msg,
+func result(c *gin.Context, httpCode int, msg string, data interface{}) {
+	c.JSON(httpCode, gin.H{
+		"msg":  msg,
+		"data": data,
 	})
 }
 
-func Success(context *gin.Context, msg string, data interface{}) {
-	respJson(context, http.StatusOK, msg, data)
+// Ok returns with a default message
+func Ok(c *gin.Context) {
+	result(c, http.StatusOK, "event succeed", nil)
 }
 
-func Fail(context *gin.Context, msg string, data interface{}) {
-	respJson(context, http.StatusBadRequest, msg, data)
+// OkWithMessage returns a given message
+func OkWithMessage(c *gin.Context, msg string) {
+	result(c, http.StatusOK, msg, nil)
 }
 
-func NotFound(context *gin.Context, msg string, data interface{}) {
-	respJson(context, http.StatusNotFound, msg, data)
+// OkWithData returns a default message and given data
+func OkWithData(c *gin.Context, data interface{}) {
+	result(c, http.StatusOK, "event succeed", data)
 }
 
-func Unauthorized(context *gin.Context, msg string, data interface{}) {
-	respJson(context, http.StatusUnauthorized, msg, data)
+// OkWithDetails returns both given message and data
+func OkWithDetails(c *gin.Context, msg string, data interface{}) {
+	result(c, http.StatusOK, msg, data)
+}
+
+// Fail returns with a default message
+func Fail(c *gin.Context) {
+	result(c, http.StatusBadRequest, "event failed", nil)
+}
+
+// FailWithMessage returns a given message
+func FailWithMessage(c *gin.Context, msg string) {
+	result(c, http.StatusBadRequest, msg, nil)
+}
+
+func NotFound(c *gin.Context) {
+	result(c, http.StatusNotFound, "resource not found", nil)
+}
+
+func Unauthorized(c *gin.Context) {
+	result(c, http.StatusUnauthorized, "event unauthorized", nil)
 }

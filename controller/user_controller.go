@@ -20,10 +20,10 @@ func (u *UserController) Register(context *gin.Context) {
 	username := context.PostForm("username")
 	password := context.PostForm("password")
 	if err := user_service.UserServiceApp.Register(username, password); err != nil {
-		response.Fail(context, "Register new user failed: "+err.Error(), nil)
+		response.FailWithMessage(context, "user register failed")
 		return
 	}
-	response.Success(context, "Register new user succeed", nil)
+	response.OkWithMessage(context, "user register succeed")
 }
 
 // Login
@@ -37,8 +37,8 @@ func (u *UserController) Login(context *gin.Context) {
 	password := context.PostForm("password")
 	token, err := user_service.UserServiceApp.Login(username, password)
 	if err != nil {
-		response.Fail(context, "Login failed, please confirm your username and password", nil)
+		response.FailWithMessage(context, "user login failed")
 		return
 	}
-	response.Success(context, "Login succeed", gin.H{"token": token})
+	response.OkWithDetails(context, "user login succeed", gin.H{"token": token})
 }
