@@ -23,7 +23,7 @@ func InitApiRouter() *gin.Engine {
 		todo.GET("/", controller.Todo.GetAll)
 		todo.GET("/by/:userID", controller.Todo.GetUserAll)
 	}
-	todoAuth := todo.Use(middleware.Auth()) // Only accessible to logged-in users
+	todoAuth := todo.Use(middleware.Auth()) // Only authorized users can make changes
 	{
 		todoAuth.POST("/", controller.Todo.Create)
 		todoAuth.PUT("/:id", controller.Todo.Update)
@@ -31,10 +31,8 @@ func InitApiRouter() *gin.Engine {
 
 	users := v1.Group("/users")
 	{
-		// Register
-		users.POST("/register", controller.User.Register)
-		// Login
-		users.POST("/login", controller.User.Login)
+		users.POST("/register", controller.User.Register) // Register
+		users.POST("/login", controller.User.Login)       // Login
 	}
 
 	return router

@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"todo/common/response"
+	"todo/global"
+	"todo/model"
 	"todo/service/todo_service"
 )
 
@@ -65,6 +67,10 @@ func (t *TodoController) GetAll(context *gin.Context) {
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoController) GetUserAll(context *gin.Context) {
 	userID := context.Param("userID")
+	if err := global.DB.Find(&model.User{}, "id = ?", userID).Error; err != nil {
+		response.NotFound(context, "User not found", nil)
+		return
+	}
 	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
 		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
