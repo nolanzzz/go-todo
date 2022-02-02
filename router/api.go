@@ -17,22 +17,22 @@ func InitApiRouter() *gin.Engine {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	v1 := router.Group("/api/v1")
-	todo := v1.Group("/todo")
+	TodoGroup := v1.Group("/todo")
 	{
-		todo.GET("/:id", controller.Todo.Get)
-		todo.GET("/", controller.Todo.GetAll)
-		todo.GET("/by/:userID", controller.Todo.GetUserAll)
+		TodoGroup.GET("/:id", controller.Todo.Get)
+		TodoGroup.GET("/", controller.Todo.GetAll)
+		TodoGroup.GET("/by/:userID", controller.Todo.GetUserAll)
 	}
-	todoAuth := todo.Use(middleware.Auth()) // Only authorized users can make changes
+	TodoAuthGroup := TodoGroup.Use(middleware.Auth()) // Only authorized users can make changes
 	{
-		todoAuth.POST("/", controller.Todo.Create)
-		todoAuth.PUT("/:id", controller.Todo.Update)
+		TodoAuthGroup.POST("/", controller.Todo.Create)
+		TodoAuthGroup.PUT("/:id", controller.Todo.Update)
 	}
 
-	users := v1.Group("/users")
+	UserGroup := v1.Group("/users")
 	{
-		users.POST("/register", controller.User.Register) // Register
-		users.POST("/login", controller.User.Login)       // Login
+		UserGroup.POST("/register", controller.User.Register) // Register
+		UserGroup.POST("/login", controller.User.Login)       // Login
 	}
 
 	return router
