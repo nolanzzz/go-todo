@@ -27,8 +27,7 @@ func JwtCheck() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("X-ID", decode.Wid)
-		c.Set("X-USERNAME", decode.Username)
+		c.Set("user_id", decode.Wid)
 		c.Next()
 	}
 }

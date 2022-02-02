@@ -39,12 +39,17 @@ func (t *TodoController) All(context *gin.Context) {
 		response.Fail(context, "Fetch all items failed :"+err.Error(), nil)
 		return
 	}
-	if len(todos) < 1 {
-		response.NotFound(context, "No todo_service found!", nil)
+	response.Success(context, "Todos fetched!", todos)
+}
+
+func (t *TodoController) UserAll(context *gin.Context) {
+	uid := context.GetInt("user_id")
+	items, err := todo_service.TodoServiceApp.UserAll(uid)
+	if err != nil {
+		response.Fail(context, "Fetch user's items failed: "+err.Error(), nil)
 		return
-	} else {
-		response.Success(context, "Todos fetched!", todos)
 	}
+	response.Success(context, "Fetch user's items succeed", gin.H{"items": items})
 }
 
 func (t *TodoController) Show(context *gin.Context) {
@@ -59,5 +64,5 @@ func (t *TodoController) Show(context *gin.Context) {
 		response.NotFound(context, "Item with id "+id+" not found!", nil)
 		return
 	}
-	response.Success(context, "Todo found!", item)
+	response.Success(context, "Todo found!", gin.H{"item": item})
 }

@@ -19,11 +19,14 @@ func InitApiRouter() *gin.Engine {
 		todoAuth := todo.Use(middleware.JwtCheck())
 		todoAuth.POST("/", controller.Todo.Store)
 		todoAuth.PUT("/:id", controller.Todo.Update)
+		todoAuth.GET("/own", controller.Todo.UserAll)
 	}
 
 	users := v1.Group("/users")
 	{
+		// Register
 		users.POST("/register", controller.User.Register)
+		// Login
 		users.POST("/login", controller.User.Login)
 	}
 

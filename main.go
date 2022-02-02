@@ -9,9 +9,6 @@ import (
 
 func init() {
 	global.DB = initialize.Gorm()
-	if global.DB != nil {
-		initialize.RegisterTables(global.DB)
-	}
 }
 
 func main() {

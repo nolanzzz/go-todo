@@ -31,7 +31,6 @@ func (s *TodoService) Update(id int, title string, description string) error {
 
 func (s *TodoService) All() ([]model.TodoResponse, error) {
 	var items []model.Todo
-	var resps []model.TodoResponse
 	res := global.DB.Find(&items)
 	if res.Error != nil {
 		return nil, res.Error
@@ -39,11 +38,25 @@ func (s *TodoService) All() ([]model.TodoResponse, error) {
 	if len(items) == 0 {
 		return []model.TodoResponse{}, nil
 	}
+	return s.todoResponses(items), nil
+}
+
+func (s *TodoService) UserAll(uid int) ([]model.TodoResponse, error) {
+	var items []model.Todo
+	err := global.DB.Find(&items, "user_id = ?", uid).Error
+	if err != nil {
+		return nil, err
+	}
+	return s.todoResponses(items), nil
+}
+
+func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
+	var responses []model.TodoResponse
 	// 对todo的属性做一些转换以构建更好的响应体
 	for _, item := range items {
-		resps = append(resps, model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed})
+		responses = append(responses, model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed})
 	}
-	return resps, nil
+	return responses
 }
 
 func (s *TodoService) Show(id string) (model.TodoResponse, error) {

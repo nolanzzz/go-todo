@@ -10,6 +10,8 @@ type Todo struct {
 	Description string `json:"description" gorm:"null"`
 	Completed   int    `json:"completed" gorm:"default:0"`
 	TimeSpent   int    `json:"time_spent" gorm:"comment:'Total minutes spent'"`
+	UserID      uint   `json:"user_id"`
+	User        User
 }
 
 type TodoResponse struct {
