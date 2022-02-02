@@ -7,7 +7,7 @@ import (
 	"todo/common/response"
 )
 
-func JwtCheck() gin.HandlerFunc {
+func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader("Authorization")
 		if header == "" {

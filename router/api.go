@@ -11,12 +11,12 @@ type Router struct{}
 func InitApiRouter() *gin.Engine {
 	router := gin.Default()
 	v1 := router.Group("/api/v1")
-	todo := v1.Group("/todo").Use(middleware.JwtCheck())
+	todo := v1.Group("/todo").Use(middleware.Auth())
 	{
 		todo.GET("/", controller.Todo.All)
 		todo.GET("/:id", controller.Todo.Show)
 
-		todoAuth := todo.Use(middleware.JwtCheck())
+		todoAuth := todo.Use(middleware.Auth())
 		todoAuth.POST("/", controller.Todo.Store)
 		todoAuth.PUT("/:id", controller.Todo.Update)
 		todoAuth.GET("/own", controller.Todo.UserAll)
