@@ -26,7 +26,7 @@ func InitApiRouter() *gin.Engine {
 	TodoAuthGroup := TodoGroup.Use(middleware.Auth()) // Only authorized users can make changes
 	{
 		TodoAuthGroup.POST("/", controller.Todo.Create)
-		TodoAuthGroup.PUT("/:id", controller.Todo.Update)
+		TodoAuthGroup.PUT("/", controller.Todo.Update)
 	}
 
 	UserGroup := v1.Group("/users")

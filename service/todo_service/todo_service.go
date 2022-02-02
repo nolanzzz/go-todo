@@ -2,7 +2,6 @@ package todo_service
 
 import (
 	"errors"
-	"log"
 	"todo/global"
 	"todo/model"
 )
@@ -11,22 +10,13 @@ type TodoService struct{}
 
 var TodoServiceApp = new(TodoService)
 
-func (s *TodoService) Create(userID uint, title string, description string) error {
-	log.Println("Arg UserID", userID)
-	item := model.Todo{
-		Title:       title,
-		Description: description,
-		UserID:      userID,
-	}
-	log.Println("UserID: ", item.UserID)
-	res := global.DB.Save(&item)
-	return res.Error
+func (s *TodoService) Create(todo model.Todo) error {
+	err := global.DB.Create(&todo).Error
+	return err
 }
 
-func (s *TodoService) Update(id int, title string, description string) error {
-	res := global.DB.Model(&model.Todo{}).
-		Where("id = ?", id).
-		Update(model.Todo{Title: title, Description: description})
+func (s *TodoService) Update(todo model.Todo) error {
+	res := global.DB.Model(&todo).Where("id = ?", todo.ID).Updates(todo)
 	if res.RowsAffected < 1 {
 		return errors.New("record not found")
 	}

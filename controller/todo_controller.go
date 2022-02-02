@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"strconv"
 	"todo/common/response"
+	"todo/model"
 	"todo/service/todo_service"
 )
 
@@ -15,14 +15,15 @@ var Todo *TodoController
 // @Tags Todo
 // @Summary Create new todo task
 // @Security ApiKeyAuth
+// @Accept application/json
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"Successfully added new TODO item."}"
 // @Router /api/v1/todo [post]
 func (t *TodoController) Create(context *gin.Context) {
-	userID := context.GetUint("user_id")
-	title := context.PostForm("title")
-	description := context.PostForm("description")
-	if err := todo_service.TodoServiceApp.Create(userID, title, description); err != nil {
+	var todo model.Todo
+	_ = context.ShouldBind(&todo)
+	todo.UserID = context.GetUint("user_id")
+	if err := todo_service.TodoServiceApp.Create(todo); err != nil {
 		response.Fail(context, "Add new item failed: "+err.Error(), nil)
 	} else {
 		response.Success(context, "Successfully added new TODO item.", nil)
@@ -33,14 +34,14 @@ func (t *TodoController) Create(context *gin.Context) {
 // @Tags Todo
 // @Summary Update an existing todo task
 // @Security ApiKeyAuth
+// @Accept application/json
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"Update item successful."}"
-// @Router /api/v1/todo/:id [put]
+// @Router /api/v1/todo [put]
 func (t *TodoController) Update(context *gin.Context) {
-	id, _ := strconv.Atoi(context.Param("id"))
-	title := context.PostForm("title")
-	description := context.PostForm("description")
-	if err := todo_service.TodoServiceApp.Update(id, title, description); err != nil {
+	var todo model.Todo
+	_ = context.ShouldBind(&todo)
+	if err := todo_service.TodoServiceApp.Update(todo); err != nil {
 		response.Fail(context, "Update item failed: "+err.Error(), nil)
 	} else {
 		response.Success(context, "Update item successful.", nil)
