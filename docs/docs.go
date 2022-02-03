@@ -25,16 +25,19 @@ var doc = `{
     "paths": {
         "/api/v1/Users/login": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Users"
                 ],
-                "summary": "Register new account",
+                "summary": "User login",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"token\":string},\"msg\":\"Login succeed\"}",
+                        "description": "{\"status\":200,\"data\":{\"token\":string},\"msg\":\"user login succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -44,6 +47,9 @@ var doc = `{
         },
         "/api/v1/Users/register": {
             "post": {
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -53,7 +59,7 @@ var doc = `{
                 "summary": "Register new account",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{},\"msg\":\"Register new user succeed\"}",
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"user register succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -72,7 +78,32 @@ var doc = `{
                 "summary": "Get all todo tasks",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"Todos fetched!\"}",
+                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Update an existing todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo update succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -85,6 +116,9 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -94,7 +128,7 @@ var doc = `{
                 "summary": "Create new todo task",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{},\"msg\":\"Successfully added new TODO item.\"}",
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo create succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -113,29 +147,7 @@ var doc = `{
                 "summary": "Get one todo task",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"item\":{}},\"msg\":\"Todo found!\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Todo"
-                ],
-                "summary": "Update an existing todo task",
-                "responses": {
-                    "200": {
-                        "description": "{\"status\":200,\"data\":{},\"msg\":\"Update item successful.\"}",
+                        "description": "{\"status\":200,\"data\":{\"item\":{}},\"msg\":\"succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -154,7 +166,7 @@ var doc = `{
                 "summary": "Get all todo tasks of a specific user",
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"Fetch user's items succeed\"}",
+                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
                         "schema": {
                             "type": "string"
                         }

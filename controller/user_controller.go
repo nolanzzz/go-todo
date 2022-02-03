@@ -15,8 +15,9 @@ var User *UserController
 // Register
 // @Tags Users
 // @Summary Register new account
+// @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{},"msg":"Register new user succeed"}"
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"user register succeed"}"
 // @Router /api/v1/Users/register [post]
 func (u *UserController) Register(c *gin.Context) {
 	var user model.User
@@ -32,8 +33,9 @@ func (u *UserController) Register(c *gin.Context) {
 // Login
 // @Tags Users
 // @Summary User login
+// @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"token":string},"msg":"Login succeed"}"
+// @Success 200 {string} string "{"status":200,"data":{"token":string},"msg":"user login succeed"}"
 // @Router /api/v1/Users/login [post]
 func (u *UserController) Login(c *gin.Context) {
 	var user model.User

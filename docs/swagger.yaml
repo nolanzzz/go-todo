@@ -3,23 +3,27 @@ info:
 paths:
   /api/v1/Users/login:
     post:
+      consumes:
+      - application/json
       produces:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"token":string},"msg":"Login succeed"}'
+          description: '{"status":200,"data":{"token":string},"msg":"user login succeed"}'
           schema:
             type: string
-      summary: Register new account
+      summary: User login
       tags:
       - Users
   /api/v1/Users/register:
     post:
+      consumes:
+      - application/json
       produces:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{},"msg":"Register new user succeed"}'
+          description: '{"status":200,"data":{},"msg":"user register succeed"}'
           schema:
             type: string
       summary: Register new account
@@ -31,24 +35,40 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"items":{}},"msg":"Todos fetched!"}'
+          description: '{"status":200,"data":{"items":{}},"msg":"succeed"}'
           schema:
             type: string
       summary: Get all todo tasks
       tags:
       - Todo
     post:
+      consumes:
+      - application/json
       produces:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{},"msg":"Successfully added new TODO
-            item."}'
+          description: '{"status":200,"data":{},"msg":"todo create succeed"}'
           schema:
             type: string
       security:
       - ApiKeyAuth: []
       summary: Create new todo task
+      tags:
+      - Todo
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"todo update succeed"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing todo task
       tags:
       - Todo
   /api/v1/todo/:id:
@@ -57,23 +77,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"item":{}},"msg":"Todo found!"}'
+          description: '{"status":200,"data":{"item":{}},"msg":"succeed"}'
           schema:
             type: string
       summary: Get one todo task
-      tags:
-      - Todo
-    put:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"status":200,"data":{},"msg":"Update item successful."}'
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Update an existing todo task
       tags:
       - Todo
   /api/v1/todo/by/:userID:
@@ -82,8 +89,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"items":{}},"msg":"Fetch user''s items
-            succeed"}'
+          description: '{"status":200,"data":{"items":{}},"msg":"succeed"}'
           schema:
             type: string
       summary: Get all todo tasks of a specific user
