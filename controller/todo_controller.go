@@ -54,9 +54,8 @@ func (t *TodoController) Update(c *gin.Context) {
 // GetAll
 // @Tags Todo
 // @Summary Get all todo tasks
-// @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":""}"
+// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo [get]
 func (t *TodoController) GetAll(c *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
@@ -72,7 +71,7 @@ func (t *TodoController) GetAll(c *gin.Context) {
 // @Tags Todo
 // @Summary Get all todo tasks of a specific user
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Fetch user's items succeed"}"
+// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoController) GetUserAll(c *gin.Context) {
 	userID := c.Param("userID")
@@ -89,7 +88,7 @@ func (t *TodoController) GetUserAll(c *gin.Context) {
 // @Tags Todo
 // @Summary Get one todo task
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"Todo found!"}"
+// @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"succeed"}"
 // @Router /api/v1/todo/:id [get]
 func (t *TodoController) Get(c *gin.Context) {
 	id := c.Param("id")
