@@ -14,7 +14,7 @@ func result(c *gin.Context, httpCode int, msg string, data interface{}) {
 
 // Ok returns with a default message
 func Ok(c *gin.Context) {
-	result(c, http.StatusOK, "event succeed", nil)
+	result(c, http.StatusOK, "succeed", nil)
 }
 
 // OkWithMessage returns a given message
@@ -24,7 +24,7 @@ func OkWithMessage(c *gin.Context, msg string) {
 
 // OkWithData returns a default message and given data
 func OkWithData(c *gin.Context, data interface{}) {
-	result(c, http.StatusOK, "event succeed", data)
+	result(c, http.StatusOK, "succeed", data)
 }
 
 // OkWithDetails returns both given message and data
@@ -34,7 +34,7 @@ func OkWithDetails(c *gin.Context, msg string, data interface{}) {
 
 // Fail returns with a default message
 func Fail(c *gin.Context) {
-	result(c, http.StatusBadRequest, "event failed", nil)
+	result(c, http.StatusBadRequest, "failed", nil)
 }
 
 // FailWithMessage returns a given message

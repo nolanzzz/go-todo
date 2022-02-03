@@ -38,7 +38,7 @@ func (t *TodoController) Create(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{},"msg":"Update item successful."}"
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo update succeed"}"
 // @Router /api/v1/todo [put]
 func (t *TodoController) Update(c *gin.Context) {
 	var todo model.Todo
@@ -54,8 +54,9 @@ func (t *TodoController) Update(c *gin.Context) {
 // GetAll
 // @Tags Todo
 // @Summary Get all todo tasks
+// @Accept application/json
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"Todos fetched!"}"
+// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":""}"
 // @Router /api/v1/todo [get]
 func (t *TodoController) GetAll(c *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
