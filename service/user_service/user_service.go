@@ -21,7 +21,8 @@ func (u *UserService) Register(user model.User) error {
 		return errors.New("username already used")
 	}
 	// Generate encrypted password
-	hashed, err := hash.NewHash().Make([]byte(user.Password))
+	var hashed []byte
+	hashed, err = hash.NewHash().Make([]byte(user.Password))
 	if err != nil {
 		return err
 	}
@@ -30,32 +31,25 @@ func (u *UserService) Register(user model.User) error {
 	return err
 }
 
-func (u *UserService) Login(username, password string) (string, error) {
-	user, err := u.GetUserByUsername(username)
-	if err != nil {
-		return "", err
-	}
-	if user.ID == 0 {
+func (u *UserService) Login(user model.User) (string, error) {
+	userDB, _ := u.GetUserByUsername(user.Username)
+	if userDB.ID == 0 {
 		return "", errors.New("user not found")
 	}
 	// Check password
-	err = hash.NewHash().Check([]byte(user.Password), []byte(password))
+	err := hash.NewHash().Check([]byte(userDB.Password), []byte(user.Password))
 	if err != nil {
 		return "", errors.New("wrong password")
 	}
-
-	// JWT
+	// Generate token
 	claims := jwt_helper.Claims{
 		Username:       user.Username,
-		Wid:            strconv.Itoa(int(user.ID)),
+		Wid:            strconv.Itoa(int(userDB.ID)),
 		StandardClaims: jwt.StandardClaims{},
 	}
-	// Generate token
-	token, err := jwt_helper.Encode(claims)
-	if err != nil {
-		return "", errors.New("generating token failed")
-	}
-	return token, nil
+	var token string
+	token, err = jwt_helper.Encode(claims)
+	return token, err
 }
 
 func (u *UserService) GetUserByUsername(username string) (model.User, error) {

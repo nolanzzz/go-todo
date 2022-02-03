@@ -36,10 +36,11 @@ func (u *UserController) Register(c *gin.Context) {
 // @Success 200 {string} string "{"status":200,"data":{"token":string},"msg":"Login succeed"}"
 // @Router /api/v1/Users/login [post]
 func (u *UserController) Login(c *gin.Context) {
-	username := c.PostForm("username")
-	password := c.PostForm("password")
-	token, err := user_service.UserServiceApp.Login(username, password)
+	var user model.User
+	_ = c.ShouldBind(&user)
+	token, err := user_service.UserServiceApp.Login(user)
 	if err != nil {
+		log.Println(err.Error())
 		response.FailWithMessage(c, "user login failed")
 		return
 	}
