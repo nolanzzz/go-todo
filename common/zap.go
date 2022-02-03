@@ -1,4 +1,4 @@
-package zap
+package common
 
 import (
 	"fmt"

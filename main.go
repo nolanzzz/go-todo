@@ -2,15 +2,14 @@ package main
 
 import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"todo/common/zap"
+	"todo/common"
 	"todo/global"
-	"todo/initialize"
 	"todo/router"
 )
 
 func init() {
-	global.DB = initialize.Gorm()
-	global.LOG = zap.Zap()
+	global.DB = common.Gorm()
+	global.LOG = common.Zap()
 }
 
 func main() {

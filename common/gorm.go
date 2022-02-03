@@ -1,4 +1,4 @@
-package initialize
+package common
 
 import (
 	"github.com/jinzhu/gorm"
