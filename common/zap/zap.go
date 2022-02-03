@@ -8,6 +8,10 @@ import (
 )
 
 func Zap() *zap.Logger {
+	// Create log directory if not exist already
+	if _, err := os.Stat("./log"); err != nil {
+		_ = os.Mkdir("./log", os.ModePerm)
+	}
 	// Debug Level
 	debugPriority := zap.LevelEnablerFunc(func(level zapcore.Level) bool {
 		return level >= zap.DebugLevel
@@ -25,7 +29,10 @@ func Zap() *zap.Logger {
 		getCore("info.log", infoPriority),
 		getCore("error.log", errorPriority),
 	}
-	return zap.New(zapcore.NewTee(cores[:]...), zap.AddCaller())
+	logger := zap.New(zapcore.NewTee(cores[:]...))
+	// AddCaller if want to track trace
+	logger = logger.WithOptions(zap.AddCaller())
+	return logger
 }
 
 func getCore(filename string, level zapcore.LevelEnabler) zapcore.Core {
