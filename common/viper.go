@@ -17,6 +17,9 @@ func Viper() *viper.Viper {
 	}
 	v.WatchConfig() // watch config changes
 	v.OnConfigChange(func(e fsnotify.Event) {
+		if err := v.Unmarshal(&global.CONFIG); err != nil {
+			panic(fmt.Errorf("fatal error loading configs: %s \n", err))
+		}
 		fmt.Println("config file changed:", e.Name)
 	})
 	if err := v.Unmarshal(&global.CONFIG); err != nil {
