@@ -106,3 +106,38 @@ func (t *TodoController) Get(c *gin.Context) {
 	}
 	response.OkWithData(c, gin.H{"item": item})
 }
+
+// Done
+// @Tags Todo
+// @Summary Mark a task as completed
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo completed"}"
+// @Router /api/v1/todo/done/:id [put]
+func (t *TodoController) Done(c *gin.Context) {
+	id := c.Param("id")
+	userID := c.GetUint("user_id")
+	var todo model.Todo
+	if err := global.DB.Find(&todo, "id = ?", id).Error; err != nil {
+		global.LOG.Error("task not found", zap.Error(err))
+		response.NotFound(c)
+		return
+	}
+	if todo.UserID != userID {
+		global.LOG.Error("wrong user")
+		response.Unauthorized(c)
+		return
+	}
+
+	if todo.Completed == 1 {
+		global.LOG.Info("task already done")
+		response.OkWithMessage(c, "task already done")
+		return
+	}
+	//var err error
+	if err := todo_service.TodoServiceApp.Done(todo); err != nil {
+		global.LOG.Error("mark todo as completed failed", zap.Error(err))
+		response.FailWithMessage(c, "mark todo as completed failed")
+	} else {
+		response.OkWithMessage(c, "todo completed")
+	}
+}

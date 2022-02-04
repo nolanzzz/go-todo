@@ -27,6 +27,7 @@ func InitApiRouter() *gin.Engine {
 	{
 		TodoAuthGroup.POST("/", controller.Todo.Create)
 		TodoAuthGroup.PUT("/", controller.Todo.Update)
+		TodoAuthGroup.PUT("/done/:id", controller.Todo.Done)
 	}
 
 	UserGroup := v1.Group("/users")

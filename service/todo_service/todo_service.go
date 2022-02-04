@@ -69,3 +69,9 @@ func (s *TodoService) Get(id string) (model.TodoResponse, error) {
 	resp = model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed}
 	return resp, nil
 }
+
+func (s *TodoService) Done(todo model.Todo) error {
+	todo.Completed = 1
+	err := global.DB.Save(&todo).Error
+	return err
+}
