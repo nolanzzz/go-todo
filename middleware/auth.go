@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
+	"go.uber.org/zap"
 	"strings"
 	"todo/common/jwt_helper"
 	"todo/common/response"
@@ -14,22 +14,21 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.GetHeader("Authorization")
 		if header == "" {
-			log.Println("empty header")
+			global.LOG.Error("empty auth header")
 			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
 		split := strings.Split(header, " ")
 		if split[0] != "Bearer" && split[1] == "" {
-			log.Println("split[0]: ", split[0])
-			log.Println("split[1]: ", split[1])
+			global.LOG.Error("Bearer check failed", zap.String("split[0]", split[0]), zap.String("split[1]", split[1]))
 			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
 		decode, err := jwt_helper.Decode(split[1])
 		if err != nil {
-			log.Println(err.Error())
+			global.LOG.Error("decoding failed", zap.Error(err))
 			response.Unauthorized(c)
 			c.Abort()
 			return
@@ -37,7 +36,7 @@ func Auth() gin.HandlerFunc {
 		var user model.User
 		err = global.DB.Find(&user, "id = ?", decode.Wid).Error
 		if err != nil || user.ID == 0 {
-			log.Println("id: ", decode.Wid, " ", err.Error())
+			global.LOG.Error("auth id error", zap.Error(err))
 			response.NotFound(c)
 			c.Abort()
 			return

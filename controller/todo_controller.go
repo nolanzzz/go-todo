@@ -2,8 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
+	"go.uber.org/zap"
 	"todo/common/response"
+	"todo/global"
 	"todo/model"
 	"todo/service/todo_service"
 )
@@ -25,7 +26,7 @@ func (t *TodoController) Create(c *gin.Context) {
 	_ = c.ShouldBind(&todo)
 	todo.UserID = c.GetUint("user_id")
 	if err := todo_service.TodoServiceApp.Create(todo); err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("todo create failed", zap.Error(err))
 		response.FailWithMessage(c, "todo create failed")
 	} else {
 		response.OkWithMessage(c, "todo create succeed")
@@ -44,7 +45,7 @@ func (t *TodoController) Update(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
 	if err := todo_service.TodoServiceApp.Update(todo); err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("todo update failed", zap.Error(err))
 		response.FailWithMessage(c, "todo update failed")
 	} else {
 		response.OkWithMessage(c, "todo update succeed")
@@ -60,7 +61,7 @@ func (t *TodoController) Update(c *gin.Context) {
 func (t *TodoController) GetAll(c *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
 	if err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("todo get all failed", zap.Error(err))
 		response.FailWithMessage(c, "todo get all failed")
 		return
 	}
@@ -77,7 +78,7 @@ func (t *TodoController) GetUserAll(c *gin.Context) {
 	userID := c.Param("userID")
 	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("todo get user all failed", zap.Error(err))
 		response.FailWithMessage(c, "todo get user all failed")
 		return
 	}
@@ -94,7 +95,7 @@ func (t *TodoController) Get(c *gin.Context) {
 	id := c.Param("id")
 	item, err := todo_service.TodoServiceApp.Get(id)
 	if err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("todo get failed", zap.Error(err))
 		response.FailWithMessage(c, "todo get failed")
 		return
 	}

@@ -2,8 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
+	"go.uber.org/zap"
 	"todo/common/response"
+	"todo/global"
 	"todo/model"
 	"todo/service/user_service"
 )
@@ -23,7 +24,7 @@ func (u *UserController) Register(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
 	if err := user_service.UserServiceApp.Register(user); err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("user register failed", zap.Error(err))
 		response.FailWithMessage(c, "user register failed")
 		return
 	}
@@ -42,7 +43,7 @@ func (u *UserController) Login(c *gin.Context) {
 	_ = c.ShouldBind(&user)
 	token, err := user_service.UserServiceApp.Login(user)
 	if err != nil {
-		log.Println(err.Error())
+		global.LOG.Error("user login failed", zap.Error(err))
 		response.FailWithMessage(c, "user login failed")
 		return
 	}
