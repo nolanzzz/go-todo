@@ -8,8 +8,9 @@ import (
 )
 
 func init() {
-	global.DB = common.Gorm()
-	global.LOG = common.Zap()
+	global.VP = common.Viper() // initialize viper and load config
+	global.DB = common.Gorm()  // initialize gorm database connection
+	global.LOG = common.Zap()  // initialize logger
 }
 
 func main() {
