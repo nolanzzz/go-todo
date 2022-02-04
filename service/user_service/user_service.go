@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"strconv"
+	"time"
 	"todo/common/hash"
 	"todo/common/jwt_helper"
 	"todo/global"
@@ -47,6 +48,7 @@ func (u *UserService) Login(user model.User) (string, error) {
 		Wid:            strconv.Itoa(int(userDB.ID)),
 		StandardClaims: jwt.StandardClaims{},
 	}
+	claims.ExpiresAt = time.Now().Unix() + global.CONFIG.JWT.ExpiresTime
 	var token string
 	token, err = jwt_helper.Encode(claims)
 	return token, err

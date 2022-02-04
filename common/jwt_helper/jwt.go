@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"todo/global"
 )
 
 var (
@@ -18,7 +19,7 @@ type Claims struct {
 }
 
 func init() {
-	key = []byte("sockstack")
+	key = []byte(global.CONFIG.JWT.Key)
 	expire = 7200
 }
 
