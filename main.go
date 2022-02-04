@@ -15,5 +15,5 @@ func init() {
 
 func main() {
 	r := router.InitApiRouter()
-	r.Run(":8080")
+	r.Run(global.CONFIG.System.Addr())
 }
