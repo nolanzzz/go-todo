@@ -46,6 +46,32 @@ func (s *TodoService) GetUserAll(userID string) ([]model.TodoResponse, error) {
 	return s.todoResponses(items), nil
 }
 
+func (s *TodoService) Get(id string) (model.TodoResponse, error) {
+	var item model.Todo
+	var resp model.TodoResponse
+	if err := global.DB.First(&item, id).Error; err != nil {
+		return resp, err
+	}
+	resp = model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed}
+	return resp, nil
+}
+
+func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
+	var todo model.Todo
+	if err := global.DB.Find(&todo, "id = ?", id).Error; err != nil {
+		return err
+	}
+	if todo.UserID != userID {
+		return errors.New("user not authorized")
+	}
+	if todo.Completed == status {
+		return nil
+	}
+	todo.Completed = status
+	err := global.DB.Save(&todo).Error
+	return err
+}
+
 func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 	var responses []model.TodoResponse
 	// 对todo的属性做一些转换以构建更好的响应体
@@ -58,20 +84,4 @@ func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 		})
 	}
 	return responses
-}
-
-func (s *TodoService) Get(id string) (model.TodoResponse, error) {
-	var item model.Todo
-	var resp model.TodoResponse
-	if err := global.DB.First(&item, id).Error; err != nil {
-		return resp, err
-	}
-	resp = model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed}
-	return resp, nil
-}
-
-func (s *TodoService) Done(todo model.Todo) error {
-	todo.Completed = 1
-	err := global.DB.Save(&todo).Error
-	return err
 }

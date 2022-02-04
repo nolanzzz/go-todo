@@ -27,7 +27,7 @@ func (t *TodoController) Create(c *gin.Context) {
 	todo.UserID = c.GetUint("user_id")
 	if err := todo_service.TodoServiceApp.Create(todo); err != nil {
 		global.LOG.Error("todo create failed", zap.Error(err))
-		response.FailWithMessage(c, "todo create failed")
+		response.FailWithMessage(c, err.Error())
 	} else {
 		response.OkWithMessage(c, "todo create succeed")
 	}
@@ -46,7 +46,7 @@ func (t *TodoController) Update(c *gin.Context) {
 	_ = c.ShouldBind(&todo)
 	if err := todo_service.TodoServiceApp.Update(todo); err != nil {
 		global.LOG.Error("todo update failed", zap.Error(err))
-		response.FailWithMessage(c, "todo update failed")
+		response.FailWithMessage(c, err.Error())
 	} else {
 		response.OkWithMessage(c, "todo update succeed")
 	}
@@ -62,7 +62,7 @@ func (t *TodoController) GetAll(c *gin.Context) {
 	todos, err := todo_service.TodoServiceApp.GetAll()
 	if err != nil {
 		global.LOG.Error("todo get all failed", zap.Error(err))
-		response.FailWithMessage(c, "todo get all failed")
+		response.FailWithMessage(c, err.Error())
 		return
 	}
 	response.OkWithData(c, gin.H{"items": todos})
@@ -79,7 +79,7 @@ func (t *TodoController) GetUserAll(c *gin.Context) {
 	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
 		global.LOG.Error("todo get user all failed", zap.Error(err))
-		response.FailWithMessage(c, "todo get user all failed")
+		response.FailWithMessage(c, err.Error())
 		return
 	}
 	response.OkWithData(c, gin.H{"items": items})
@@ -96,7 +96,7 @@ func (t *TodoController) Get(c *gin.Context) {
 	item, err := todo_service.TodoServiceApp.Get(id)
 	if err != nil {
 		global.LOG.Error("todo get failed", zap.Error(err))
-		response.FailWithMessage(c, "todo get failed")
+		response.FailWithMessage(c, err.Error())
 		return
 	}
 	// Not found
@@ -116,28 +116,27 @@ func (t *TodoController) Get(c *gin.Context) {
 func (t *TodoController) Done(c *gin.Context) {
 	id := c.Param("id")
 	userID := c.GetUint("user_id")
-	var todo model.Todo
-	if err := global.DB.Find(&todo, "id = ?", id).Error; err != nil {
-		global.LOG.Error("task not found", zap.Error(err))
-		response.NotFound(c)
-		return
-	}
-	if todo.UserID != userID {
-		global.LOG.Error("wrong user")
-		response.Unauthorized(c)
-		return
-	}
-
-	if todo.Completed == 1 {
-		global.LOG.Info("task already done")
-		response.OkWithMessage(c, "task already done")
-		return
-	}
-	//var err error
-	if err := todo_service.TodoServiceApp.Done(todo); err != nil {
+	if err := todo_service.TodoServiceApp.UpdateStatus(id, userID, 1); err != nil {
 		global.LOG.Error("mark todo as completed failed", zap.Error(err))
-		response.FailWithMessage(c, "mark todo as completed failed")
+		response.FailWithMessage(c, err.Error())
 	} else {
 		response.OkWithMessage(c, "todo completed")
+	}
+}
+
+// Undone
+// @Tags Todo
+// @Summary Undone a todo task
+// @Produce application/json
+// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo undone"}"
+// @Router /api/v1/todo/undone/:id [put]
+func (t *TodoController) Undone(c *gin.Context) {
+	id := c.Param("id")
+	userID := c.GetUint("user_id")
+	if err := todo_service.TodoServiceApp.UpdateStatus(id, userID, 0); err != nil {
+		global.LOG.Error("undone todo failed", zap.Error(err))
+		response.FailWithMessage(c, err.Error())
+	} else {
+		response.OkWithMessage(c, "todo undone")
 	}
 }
