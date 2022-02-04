@@ -9,4 +9,5 @@ jwt:
   expires-time: 172800 # 48 hours
   key: "zjJSnw$13jskjx"
 zap:
+  format: console
   showline: true

@@ -43,9 +43,14 @@ func getCore(filename string, level zapcore.LevelEnabler) zapcore.Core {
 	return zapcore.NewCore(getEncoder(), writer, level)
 }
 
-// getEncoder get zapcore.Encoder
 func getEncoder() zapcore.Encoder {
-	return zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+	var config zapcore.EncoderConfig
+	if global.CONFIG.Zap.Format == "json" {
+		config = zap.NewProductionEncoderConfig()
+		config.EncodeTime = zapcore.ISO8601TimeEncoder
+		return zapcore.NewJSONEncoder(config)
+	}
+	return zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 }
 
 func getWriter(filename string) zapcore.WriteSyncer {

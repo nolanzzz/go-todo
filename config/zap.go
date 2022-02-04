@@ -1,5 +1,6 @@
 package config
 
 type Zap struct {
-	ShowLine bool `mapstructure:"showline"`
+	Format   string `mapstructure:"format"`
+	ShowLine bool   `mapstructure:"showline"`
 }
