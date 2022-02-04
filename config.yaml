@@ -8,3 +8,5 @@ mysql:
 jwt:
   expires-time: 172800 # 48 hours
   key: "zjJSnw$13jskjx"
+zap:
+  showline: true

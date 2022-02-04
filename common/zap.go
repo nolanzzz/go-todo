@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
+	"todo/global"
 )
 
 func Zap() *zap.Logger {
@@ -30,8 +31,9 @@ func Zap() *zap.Logger {
 		getCore("error.log", errorPriority),
 	}
 	logger := zap.New(zapcore.NewTee(cores[:]...))
-	// AddCaller if want to track trace
-	logger = logger.WithOptions(zap.AddCaller())
+	if global.CONFIG.Zap.ShowLine {
+		logger = logger.WithOptions(zap.AddCaller())
+	}
 	return logger
 }
 
