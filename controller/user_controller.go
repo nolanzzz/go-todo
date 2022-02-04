@@ -25,7 +25,7 @@ func (u *UserController) Register(c *gin.Context) {
 	_ = c.ShouldBind(&user)
 	if err := user_service.UserServiceApp.Register(user); err != nil {
 		global.LOG.Error("user register failed", zap.Error(err))
-		response.FailWithMessage(c, "user register failed")
+		response.FailWithMessage(c, err.Error())
 		return
 	}
 	response.OkWithMessage(c, "user register succeed")
@@ -44,7 +44,7 @@ func (u *UserController) Login(c *gin.Context) {
 	token, err := user_service.UserServiceApp.Login(user)
 	if err != nil {
 		global.LOG.Error("user login failed", zap.Error(err))
-		response.FailWithMessage(c, "user login failed")
+		response.FailWithMessage(c, err.Error())
 		return
 	}
 	response.OkWithDetails(c, "user login succeed", gin.H{"token": token})
