@@ -2,8 +2,11 @@ package todo_service
 
 import (
 	"errors"
+	"fmt"
+	"time"
 	"todo/global"
 	"todo/model"
+	"todo/utils"
 )
 
 type TodoService struct{}
@@ -68,6 +71,13 @@ func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
 		return nil
 	}
 	todo.Completed = status
+	// calculate time spent on complete
+	if status == 1 {
+		todo.TimeSpent = utils.TimeDiffSeconds(todo.CreatedAt, time.Now())
+	} else {
+		todo.TimeSpent = 0
+	}
+	fmt.Println("todo.TimeSpent: ", todo.TimeSpent)
 	err := global.DB.Save(&todo).Error
 	return err
 }
