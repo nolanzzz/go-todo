@@ -16,5 +16,5 @@ func init() {
 
 func main() {
 	r := router.InitApiRouter()
-	r.Run(global.CONFIG.System.Addr())
+	_ = r.Run(global.CONFIG.System.Addr())
 }
