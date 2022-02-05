@@ -8,6 +8,7 @@ import (
 	"todo/global"
 	"todo/model"
 	"todo/model/response"
+	"todo/service"
 )
 
 func Auth() gin.HandlerFunc {
@@ -40,6 +41,13 @@ func Auth() gin.HandlerFunc {
 			response.NotFound(c)
 			c.Abort()
 			return
+		}
+		if global.CONFIG.System.UseRedisJWT {
+			_, err = service.JwtServiceApp.GetRedisJWT(user.Username)
+			if err != nil {
+				global.LOG.Error("get redis jwt failed", zap.Error(err))
+				// Add blacklist or similar events as needed
+			}
 		}
 		c.Set("user_id", user.ID)
 		c.Next()
