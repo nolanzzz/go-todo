@@ -2,7 +2,6 @@ package todo_service
 
 import (
 	"errors"
-	"fmt"
 	"time"
 	"todo/global"
 	"todo/model"
@@ -77,7 +76,7 @@ func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
 	} else {
 		todo.TimeSpent = 0
 	}
-	fmt.Println("todo.TimeSpent: ", todo.TimeSpent)
+	// TODO Store total time spent to redis
 	err := global.DB.Save(&todo).Error
 	return err
 }
