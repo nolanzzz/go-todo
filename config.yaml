@@ -14,6 +14,7 @@ redis:
   password: ""
 system:
   port: 8080
+  use-redis-jwt: true
 zap:
   format: console
   showline: true
