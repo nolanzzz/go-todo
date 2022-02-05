@@ -1,8 +1,10 @@
 package utils
 
-import "time"
+import (
+	"time"
+)
 
 func TimeDiffSeconds(start, end time.Time) (seconds int) {
-	seconds = end.Second() - start.Second()
+	seconds = int(end.Unix() - start.Unix())
 	return seconds
 }
