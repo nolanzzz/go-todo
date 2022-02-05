@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"go.uber.org/zap"
 	"time"
 	"todo/global"
 	"todo/model"
@@ -72,12 +73,30 @@ func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
 	todo.Completed = status
 	// calculate time spent on complete
 	if status == 1 {
-		todo.TimeSpent = utils.TimeDiffSeconds(todo.CreatedAt, time.Now())
+		todo.TimeSpent = utils.TimeDiffMinutes(todo.CreatedAt, time.Now())
 	} else {
 		todo.TimeSpent = 0
 	}
-	// TODO Store total time spent to redis
-	err := global.DB.Save(&todo).Error
+	if err := global.DB.Save(&todo).Error; err != nil {
+		return err
+	}
+	var user model.User
+	if err := global.DB.Model(&todo).Association("User").Find(&user).Error; err != nil {
+		global.LOG.Error("user not found")
+	}
+	// Update ranking stats in redis
+	if err := s.updateRedisStats(user.Username, todo.TimeSpent); err != nil {
+		global.LOG.Error("update redis stats failed", zap.Error(err))
+	}
+	return nil
+}
+
+func (s *TodoService) updateRedisStats(username string, timeSpent int) (err error) {
+	err = global.REDIS.ZIncrBy("rank_minutes", float64(timeSpent), username).Err()
+	if err != nil {
+		return err
+	}
+	err = global.REDIS.ZIncrBy("rank_todos", 1, username).Err()
 	return err
 }
 
