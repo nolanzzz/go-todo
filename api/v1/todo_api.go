@@ -3,9 +3,9 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"todo/core/response"
 	"todo/global"
 	"todo/model"
+	"todo/model/response"
 	"todo/service/todo_service"
 )
 

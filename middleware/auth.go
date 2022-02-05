@@ -5,9 +5,9 @@ import (
 	"go.uber.org/zap"
 	"strings"
 	"todo/core/jwt_helper"
-	"todo/core/response"
 	"todo/global"
 	"todo/model"
+	"todo/model/response"
 )
 
 func Auth() gin.HandlerFunc {
