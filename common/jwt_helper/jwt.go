@@ -2,6 +2,7 @@ package jwt_helper
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 	"todo/global"
@@ -20,13 +21,15 @@ type Claims struct {
 
 func init() {
 	key = []byte(global.CONFIG.JWT.Key)
-	expire = 7200
+	expire = global.CONFIG.JWT.ExpiresTime
 }
 
 func Encode(c Claims) (string, error) {
+	fmt.Println("c.ExpiresAt: ", c.ExpiresAt)
 	if c.ExpiresAt == 0 {
 		c.ExpiresAt = time.Now().Unix() + expire
 	}
+	fmt.Println("c.ExpiresAt: ", c.ExpiresAt)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
 	// Sign and get the complete encoded token as a string using the secret
