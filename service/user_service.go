@@ -32,13 +32,13 @@ func (u *UserService) Register(user model.User) error {
 	return err
 }
 
-func (u *UserService) Login(user model.User) (string, error) {
+func (u *UserService) Login(user model.User) (token string, err error) {
 	userDB, _ := u.GetUserByUsername(user.Username)
 	if userDB.ID == 0 {
 		return "", errors.New("user not found")
 	}
 	// Check password
-	err := hash.NewHash().Check([]byte(userDB.Password), []byte(user.Password))
+	err = hash.NewHash().Check([]byte(userDB.Password), []byte(user.Password))
 	if err != nil {
 		return "", errors.New("wrong password")
 	}
@@ -49,8 +49,9 @@ func (u *UserService) Login(user model.User) (string, error) {
 		StandardClaims: jwt.StandardClaims{},
 	}
 	claims.ExpiresAt = time.Now().Unix() + global.CONFIG.JWT.ExpiresTime
-	var token string
 	token, err = jwt_helper.Encode(claims)
+
+	err = JwtServiceApp.SetRedisJWT(user.Username, token)
 	return token, err
 }
 

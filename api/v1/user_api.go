@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 	"go.uber.org/zap"
 	"todo/global"
 	"todo/model"
@@ -44,6 +45,19 @@ func (u *UserController) Login(c *gin.Context) {
 	token, err := service.UserServiceApp.Login(user)
 	if err != nil {
 		global.LOG.Error("user login failed", zap.Error(err))
+		response.FailWithMessage(c, err.Error())
+		return
+	}
+	// Store jwt token to redis
+	_, err = service.JwtServiceApp.GetRedisJWT(user.Username)
+	if err == redis.Nil || err == nil {
+		if err = service.JwtServiceApp.SetRedisJWT(user.Username, token); err != nil {
+			global.LOG.Error("set redis jwt failed", zap.Error(err))
+			response.FailWithMessage(c, err.Error())
+			return
+		}
+	} else if err != nil {
+		global.LOG.Error("access redis jwt failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
 	}
