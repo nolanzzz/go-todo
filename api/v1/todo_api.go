@@ -6,7 +6,7 @@ import (
 	"todo/global"
 	"todo/model"
 	"todo/model/response"
-	"todo/service/todo_service"
+	"todo/service"
 )
 
 type TodoController struct{}
@@ -25,7 +25,7 @@ func (t *TodoController) Create(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
 	todo.UserID = c.GetUint("user_id")
-	if err := todo_service.TodoServiceApp.Create(todo); err != nil {
+	if err := service.TodoServiceApp.Create(todo); err != nil {
 		global.LOG.Error("todo create failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 	} else {
@@ -44,7 +44,7 @@ func (t *TodoController) Create(c *gin.Context) {
 func (t *TodoController) Update(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
-	if err := todo_service.TodoServiceApp.Update(todo); err != nil {
+	if err := service.TodoServiceApp.Update(todo); err != nil {
 		global.LOG.Error("todo update failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 	} else {
@@ -59,7 +59,7 @@ func (t *TodoController) Update(c *gin.Context) {
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo [get]
 func (t *TodoController) GetAll(c *gin.Context) {
-	todos, err := todo_service.TodoServiceApp.GetAll()
+	todos, err := service.TodoServiceApp.GetAll()
 	if err != nil {
 		global.LOG.Error("todo get all failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
@@ -76,7 +76,7 @@ func (t *TodoController) GetAll(c *gin.Context) {
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoController) GetUserAll(c *gin.Context) {
 	userID := c.Param("userID")
-	items, err := todo_service.TodoServiceApp.GetUserAll(userID)
+	items, err := service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
 		global.LOG.Error("todo get user all failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
@@ -93,7 +93,7 @@ func (t *TodoController) GetUserAll(c *gin.Context) {
 // @Router /api/v1/todo/:id [get]
 func (t *TodoController) Get(c *gin.Context) {
 	id := c.Param("id")
-	item, err := todo_service.TodoServiceApp.Get(id)
+	item, err := service.TodoServiceApp.Get(id)
 	if err != nil {
 		global.LOG.Error("todo get failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
@@ -116,7 +116,7 @@ func (t *TodoController) Get(c *gin.Context) {
 func (t *TodoController) Done(c *gin.Context) {
 	id := c.Param("id")
 	userID := c.GetUint("user_id")
-	if err := todo_service.TodoServiceApp.UpdateStatus(id, userID, 1); err != nil {
+	if err := service.TodoServiceApp.UpdateStatus(id, userID, 1); err != nil {
 		global.LOG.Error("mark todo as completed failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 	} else {
@@ -133,7 +133,7 @@ func (t *TodoController) Done(c *gin.Context) {
 func (t *TodoController) Undone(c *gin.Context) {
 	id := c.Param("id")
 	userID := c.GetUint("user_id")
-	if err := todo_service.TodoServiceApp.UpdateStatus(id, userID, 0); err != nil {
+	if err := service.TodoServiceApp.UpdateStatus(id, userID, 0); err != nil {
 		global.LOG.Error("undone todo failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 	} else {

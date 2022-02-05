@@ -6,7 +6,7 @@ import (
 	"todo/global"
 	"todo/model"
 	"todo/model/response"
-	"todo/service/user_service"
+	"todo/service"
 )
 
 type UserController struct{}
@@ -23,7 +23,7 @@ var User *UserController
 func (u *UserController) Register(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
-	if err := user_service.UserServiceApp.Register(user); err != nil {
+	if err := service.UserServiceApp.Register(user); err != nil {
 		global.LOG.Error("user register failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
@@ -41,7 +41,7 @@ func (u *UserController) Register(c *gin.Context) {
 func (u *UserController) Login(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
-	token, err := user_service.UserServiceApp.Login(user)
+	token, err := service.UserServiceApp.Login(user)
 	if err != nil {
 		global.LOG.Error("user login failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())

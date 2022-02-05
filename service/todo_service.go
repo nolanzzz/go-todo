@@ -1,4 +1,4 @@
-package todo_service
+package service
 
 import (
 	"errors"
