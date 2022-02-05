@@ -28,7 +28,7 @@ func Auth() gin.HandlerFunc {
 		}
 		decode, err := jwt_helper.Decode(split[1])
 		if err != nil {
-			global.LOG.Error("decoding failed", zap.Error(err))
+			global.LOG.Error("decoding failed", zap.Error(err), zap.Int64("expires_at", decode.ExpiresAt))
 			response.Unauthorized(c)
 			c.Abort()
 			return
