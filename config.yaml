@@ -1,3 +1,6 @@
+jwt:
+  expires-time: 172800 # 48 hours
+  key: "zjJSnw$13jskjx"
 mysql:
   host: 127.0.0.1
   port: "3306"
@@ -5,9 +8,10 @@ mysql:
   database: demo
   username: root
   password: ""
-jwt:
-  expires-time: 172800 # 48 hours
-  key: "zjJSnw$13jskjx"
+redis:
+  database: 0
+  addr: 127.0.0.1:6379
+  password: ""
 system:
   port: 8080
 zap:

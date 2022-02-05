@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -9,7 +10,8 @@ import (
 
 var (
 	DB     *gorm.DB
-	LOG    *zap.Logger
 	VP     *viper.Viper
+	LOG    *zap.Logger
+	REDIS  *redis.Client
 	CONFIG config.Config
 )
