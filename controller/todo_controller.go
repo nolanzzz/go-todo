@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"todo/common/response"
+	"todo/core/response"
 	"todo/global"
 	"todo/model"
 	"todo/service/todo_service"

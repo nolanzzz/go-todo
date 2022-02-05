@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strings"
-	"todo/common/jwt_helper"
-	"todo/common/response"
+	"todo/core/jwt_helper"
+	"todo/core/response"
 	"todo/global"
 	"todo/model"
 )

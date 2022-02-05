@@ -4,8 +4,8 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"strconv"
-	"todo/common/hash"
-	"todo/common/jwt_helper"
+	"todo/core/hash"
+	"todo/core/jwt_helper"
 	"todo/global"
 	"todo/model"
 )

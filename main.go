@@ -2,15 +2,15 @@ package main
 
 import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"todo/common"
+	"todo/core"
 	"todo/global"
 	"todo/router"
 )
 
 func init() {
-	global.VP = common.Viper() // initialize viper and load config
-	global.DB = common.Gorm()  // initialize gorm database connection
-	global.LOG = common.Zap()  // initialize logger
+	global.VP = core.Viper() // initialize viper and load config
+	global.DB = core.Gorm()  // initialize gorm database connection
+	global.LOG = core.Zap()  // initialize logger
 }
 
 func main() {
