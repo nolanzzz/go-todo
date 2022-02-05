@@ -1,6 +1,6 @@
 jwt:
   expires-time: 172800 # 48 hours
-  key: "zjJSnw$13jskjx"
+  signing-key: "zjJSnw$13jskjx"
 mysql:
   host: 127.0.0.1
   port: "3306"

@@ -19,7 +19,7 @@ type Claims struct {
 }
 
 func init() {
-	key = []byte(global.CONFIG.JWT.Key)
+	key = []byte(global.CONFIG.JWT.SigningKey)
 	expire = global.CONFIG.JWT.ExpiresTime
 }
 
