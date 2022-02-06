@@ -14,11 +14,19 @@ var Ranking RankingApi
 
 func (r *RankingApi) RankingByTodos(c *gin.Context) {
 	limit := c.GetInt("limit")
-	if limit < 10 {
-		limit = 10 // get top 10 records at least
-	}
-	if records, err := service.RankingServiceApp.RankingByTodos(limit); err != nil {
+	if records, err := service.RankingServiceApp.Ranking(limit, "todos"); err != nil {
 		global.LOG.Error("get ranking by todos from redis failed", zap.Error(err))
+		response.FailWithMessage(c, err.Error())
+		return
+	} else {
+		response.OkWithData(c, gin.H{"ranking": records})
+	}
+}
+
+func (r *RankingApi) RankingByMinutes(c *gin.Context) {
+	limit := c.GetInt("limit")
+	if records, err := service.RankingServiceApp.Ranking(limit, "minutes"); err != nil {
+		global.LOG.Error("get ranking by minutes from redis failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
 	} else {
