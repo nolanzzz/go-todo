@@ -9,9 +9,9 @@ import (
 	"todo/service"
 )
 
-type TodoController struct{}
+type TodoApi struct{}
 
-var Todo *TodoController
+var Todo *TodoApi
 
 // Create
 // @Tags Todo
@@ -21,7 +21,7 @@ var Todo *TodoController
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo create succeed"}"
 // @Router /api/v1/todo [post]
-func (t *TodoController) Create(c *gin.Context) {
+func (t *TodoApi) Create(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
 	todo.UserID = c.GetUint("user_id")
@@ -41,7 +41,7 @@ func (t *TodoController) Create(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo update succeed"}"
 // @Router /api/v1/todo [put]
-func (t *TodoController) Update(c *gin.Context) {
+func (t *TodoApi) Update(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
 	if err := service.TodoServiceApp.Update(todo); err != nil {
@@ -58,7 +58,7 @@ func (t *TodoController) Update(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo [get]
-func (t *TodoController) GetAll(c *gin.Context) {
+func (t *TodoApi) GetAll(c *gin.Context) {
 	todos, err := service.TodoServiceApp.GetAll()
 	if err != nil {
 		global.LOG.Error("todo get all failed", zap.Error(err))
@@ -74,7 +74,7 @@ func (t *TodoController) GetAll(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo/by/:userID [get]
-func (t *TodoController) GetUserAll(c *gin.Context) {
+func (t *TodoApi) GetUserAll(c *gin.Context) {
 	userID := c.Param("userID")
 	items, err := service.TodoServiceApp.GetUserAll(userID)
 	if err != nil {
@@ -91,7 +91,7 @@ func (t *TodoController) GetUserAll(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"succeed"}"
 // @Router /api/v1/todo/:id [get]
-func (t *TodoController) Get(c *gin.Context) {
+func (t *TodoApi) Get(c *gin.Context) {
 	id := c.Param("id")
 	item, err := service.TodoServiceApp.Get(id)
 	if err != nil {
@@ -113,7 +113,7 @@ func (t *TodoController) Get(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo completed"}"
 // @Router /api/v1/todo/done/:id [put]
-func (t *TodoController) Done(c *gin.Context) {
+func (t *TodoApi) Done(c *gin.Context) {
 	id := c.Param("id")
 	userID := c.GetUint("user_id")
 	if err := service.TodoServiceApp.UpdateStatus(id, userID, 1); err != nil {
@@ -130,7 +130,7 @@ func (t *TodoController) Done(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo undone"}"
 // @Router /api/v1/todo/undone/:id [put]
-func (t *TodoController) Undone(c *gin.Context) {
+func (t *TodoApi) Undone(c *gin.Context) {
 	id := c.Param("id")
 	userID := c.GetUint("user_id")
 	if err := service.TodoServiceApp.UpdateStatus(id, userID, 0); err != nil {

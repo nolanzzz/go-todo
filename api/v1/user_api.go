@@ -10,9 +10,9 @@ import (
 	"todo/service"
 )
 
-type UserController struct{}
+type UserApi struct{}
 
-var User *UserController
+var User *UserApi
 
 // Register
 // @Tags Users
@@ -21,7 +21,7 @@ var User *UserController
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"user register succeed"}"
 // @Router /api/v1/Users/register [post]
-func (u *UserController) Register(c *gin.Context) {
+func (u *UserApi) Register(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
 	if err := service.UserServiceApp.Register(user); err != nil {
@@ -39,7 +39,7 @@ func (u *UserController) Register(c *gin.Context) {
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"token":string},"msg":"user login succeed"}"
 // @Router /api/v1/Users/login [post]
-func (u *UserController) Login(c *gin.Context) {
+func (u *UserApi) Login(c *gin.Context) {
 	var user model.User
 	_ = c.ShouldBind(&user)
 	token, err := service.UserServiceApp.Login(user)
