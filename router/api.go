@@ -35,5 +35,10 @@ func InitApiRouter() *gin.Engine {
 		UserGroup.POST("/login", api.User.Login)       // Login
 	}
 
+	RankingGroup := router.Group("/api/v1/ranking")
+	{
+		RankingGroup.GET("/todos/:limit", api.Ranking.RankingByTodos)
+	}
+
 	return router
 }
