@@ -2,9 +2,7 @@ package core
 
 import (
 	"github.com/jinzhu/gorm"
-	"log"
 	"todo/global"
-	"todo/model"
 )
 
 // Gorm - initialize global database instance
@@ -21,15 +19,4 @@ func getConfig() string {
 	return global.CONFIG.Mysql.Username + ":" + global.CONFIG.Mysql.Password +
 		"@tcp(" + global.CONFIG.Mysql.Host + ":" + global.CONFIG.Mysql.Port + ")/" +
 		global.CONFIG.Mysql.Database + "?" + global.CONFIG.Mysql.Config
-}
-
-// RegisterTables - Migrate database tables
-func RegisterTables(db *gorm.DB) {
-	db.AutoMigrate(
-		&model.Todo{},
-		&model.User{},
-	)
-	if db.Error != nil {
-		log.Fatal("register table failed: ", db.Error)
-	}
 }
