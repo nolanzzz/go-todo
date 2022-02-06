@@ -1,3 +1,5 @@
+database:
+  migrate: true
 jwt:
   expires-time: 172800 # 48 hours
   signing-key: "zjJSnw$13jskjx"
