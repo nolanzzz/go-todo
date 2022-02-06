@@ -12,6 +12,8 @@ redis:
   database: 0
   addr: 127.0.0.1:6379
   password: ""
+  key-rank-todos: "rank_todos"
+  key-rank-minutes: "rank_minutes"
 system:
   port: 8080
   use-redis-jwt: true

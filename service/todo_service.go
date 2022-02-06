@@ -92,11 +92,11 @@ func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
 }
 
 func (s *TodoService) updateRedisStats(username string, timeSpent int) (err error) {
-	err = global.REDIS.ZIncrBy("rank_minutes", float64(timeSpent), username).Err()
+	err = global.REDIS.ZIncrBy(global.CONFIG.Redis.KeyRankMinutes, float64(timeSpent), username).Err()
 	if err != nil {
 		return err
 	}
-	err = global.REDIS.ZIncrBy("rank_todos", 1, username).Err()
+	err = global.REDIS.ZIncrBy(global.CONFIG.Redis.KeyRankTodos, 1, username).Err()
 	return err
 }
 
