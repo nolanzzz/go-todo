@@ -10,7 +10,7 @@ type RankingService struct{}
 
 var RankingServiceApp RankingService
 
-func (r *RankingService) Ranking(limit int, category string) ([]redis.Z, error) {
+func (r *RankingService) Ranking(limit int, category string, order string) (rankings []redis.Z, err error) {
 	if limit < 10 {
 		limit = 10 // get top 10 records at least
 	}
@@ -20,11 +20,12 @@ func (r *RankingService) Ranking(limit int, category string) ([]redis.Z, error) 
 	} else {
 		key = global.CONFIG.Redis.KeyRankMinutes
 	}
-	rankings, err := global.REDIS.ZRangeWithScores(key, 0, int64(limit)).Result()
-	if err != nil {
-		return nil, err
+	if order == "asc" {
+		rankings, err = global.REDIS.ZRangeWithScores(key, 0, int64(limit)).Result()
+	} else {
+		rankings, err = global.REDIS.ZRevRangeWithScores(key, 0, int64(limit)).Result()
 	}
-	return rankings, nil
+	return rankings, err
 }
 
 func (r *RankingService) CleanRankings() {
