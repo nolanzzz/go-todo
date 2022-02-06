@@ -1,6 +1,6 @@
 CREATE TABLE `users` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
-    `username` varchar(255) DEFAULT NULL,
+    `username` varchar(255) UNIQUE DEFAULT NULL,
     `password` varchar(255) NOT NULL,
     `created_at` datetime DEFAULT NULL,
     `updated_at` datetime DEFAULT NULL,
