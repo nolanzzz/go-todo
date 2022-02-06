@@ -73,6 +73,7 @@ func (t *TodoApi) GetAll(c *gin.Context) {
 // @Summary Get all todo tasks of a specific user
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
+// @Param   userID path int true "id of user"
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoApi) GetUserAll(c *gin.Context) {
 	userID := c.Param("userID")
@@ -90,6 +91,7 @@ func (t *TodoApi) GetUserAll(c *gin.Context) {
 // @Summary Get one todo task
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"item":{}},"msg":"succeed"}"
+// @Param   id path int true "id of task"
 // @Router /api/v1/todo/:id [get]
 func (t *TodoApi) Get(c *gin.Context) {
 	id := c.Param("id")
@@ -112,6 +114,7 @@ func (t *TodoApi) Get(c *gin.Context) {
 // @Summary Mark a task as completed
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo completed"}"
+// @Param   id path int true "id of task"
 // @Router /api/v1/todo/done/:id [put]
 func (t *TodoApi) Done(c *gin.Context) {
 	id := c.Param("id")
@@ -129,6 +132,7 @@ func (t *TodoApi) Done(c *gin.Context) {
 // @Summary Undone a todo task
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{},"msg":"todo undone"}"
+// @Param   id path int true "id of task"
 // @Router /api/v1/todo/undone/:id [put]
 func (t *TodoApi) Undone(c *gin.Context) {
 	id := c.Param("id")

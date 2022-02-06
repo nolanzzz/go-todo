@@ -15,9 +15,9 @@ var Ranking RankingApi
 // RankingByTodos
 // @Tags 	Ranking
 // @Summary Get ranking by number of todos
-// @Accept 	param
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"ranking":{}},"msg":"succeed"}"
+// @Param   limit path int true "number of records"
 // @Router 	/api/v1/ranking/todos/:limit [get]
 func (r *RankingApi) RankingByTodos(c *gin.Context) {
 	limit := c.GetInt("limit")
@@ -33,9 +33,9 @@ func (r *RankingApi) RankingByTodos(c *gin.Context) {
 // RankingByMinutes
 // @Tags 	Ranking
 // @Summary Get ranking by total sum of minutes
-// @Accept 	param
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"ranking":{}},"msg":"succeed"}"
+// @Param   limit path int true "number of records"
 // @Router 	/api/v1/ranking/minutes/:limit [get]
 func (r *RankingApi) RankingByMinutes(c *gin.Context) {
 	limit := c.GetInt("limit")

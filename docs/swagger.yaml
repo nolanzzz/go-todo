@@ -35,6 +35,42 @@ paths:
       summary: Register new account
       tags:
       - Users
+  /api/v1/ranking/minutes/:limit:
+    get:
+      parameters:
+      - description: number of records
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"ranking":{}},"msg":"succeed"}'
+          schema:
+            type: string
+      summary: Get ranking by total sum of minutes
+      tags:
+      - Ranking
+  /api/v1/ranking/todos/:limit:
+    get:
+      parameters:
+      - description: number of records
+        in: path
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{"ranking":{}},"msg":"succeed"}'
+          schema:
+            type: string
+      summary: Get ranking by number of todos
+      tags:
+      - Ranking
   /api/v1/todo:
     get:
       produces:
@@ -79,6 +115,12 @@ paths:
       - Todo
   /api/v1/todo/:id:
     get:
+      parameters:
+      - description: id of task
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -91,6 +133,12 @@ paths:
       - Todo
   /api/v1/todo/by/:userID:
     get:
+      parameters:
+      - description: id of user
+        in: path
+        name: userID
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -103,6 +151,12 @@ paths:
       - Todo
   /api/v1/todo/done/:id:
     put:
+      parameters:
+      - description: id of task
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -115,6 +169,12 @@ paths:
       - Todo
   /api/v1/todo/undone/:id:
     put:
+      parameters:
+      - description: id of task
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -125,4 +185,9 @@ paths:
       summary: Undone a todo task
       tags:
       - Todo
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

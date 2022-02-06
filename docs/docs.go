@@ -70,6 +70,62 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/ranking/minutes/:limit": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ranking"
+                ],
+                "summary": "Get ranking by total sum of minutes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "number of records",
+                        "name": "limit",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{\"ranking\":{}},\"msg\":\"succeed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ranking/todos/:limit": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ranking"
+                ],
+                "summary": "Get ranking by number of todos",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "number of records",
+                        "name": "limit",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{\"ranking\":{}},\"msg\":\"succeed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/todo": {
             "get": {
                 "produces": [
@@ -148,6 +204,15 @@ var doc = `{
                     "Todo"
                 ],
                 "summary": "Get one todo task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of task",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{\"item\":{}},\"msg\":\"succeed\"}",
@@ -167,6 +232,15 @@ var doc = `{
                     "Todo"
                 ],
                 "summary": "Get all todo tasks of a specific user",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of user",
+                        "name": "userID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
@@ -186,6 +260,15 @@ var doc = `{
                     "Todo"
                 ],
                 "summary": "Mark a task as completed",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of task",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{},\"msg\":\"todo completed\"}",
@@ -205,6 +288,15 @@ var doc = `{
                     "Todo"
                 ],
                 "summary": "Undone a todo task",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of task",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{},\"msg\":\"todo undone\"}",
@@ -214,6 +306,13 @@ var doc = `{
                     }
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
