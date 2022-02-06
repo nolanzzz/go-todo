@@ -20,7 +20,7 @@ func InitApiRouter() *gin.Engine {
 		TodoGroup.GET("/", api.Todo.GetAll)
 		TodoGroup.GET("/by/:userID", api.Todo.GetUserAll)
 
-		TodoAuthGroup := TodoGroup.Use(middleware.Auth()) // Only authorized users can make changes
+		TodoAuthGroup := TodoGroup.Use(middleware.Auth())
 		{
 			TodoAuthGroup.POST("/", api.Todo.Create)
 			TodoAuthGroup.PUT("/", api.Todo.Update)
@@ -31,8 +31,8 @@ func InitApiRouter() *gin.Engine {
 
 	UserGroup := router.Group("/api/v1/users")
 	{
-		UserGroup.POST("/register", api.User.Register) // Register
-		UserGroup.POST("/login", api.User.Login)       // Login
+		UserGroup.POST("/register", api.User.Register)
+		UserGroup.POST("/login", api.User.Login)
 	}
 
 	RankingGroup := router.Group("/api/v1/ranking")
