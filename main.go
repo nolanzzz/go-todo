@@ -12,6 +12,7 @@ func init() {
 	global.DB = core.Gorm()     // initialize gorm database connection
 	global.LOG = core.Zap()     // initialize logger
 	global.REDIS = core.Redis() // initialize Redis db
+	core.InitTimer()            // start cron timer
 }
 
 func main() {

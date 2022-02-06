@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/go-redis/redis"
+	"go.uber.org/zap"
 	"todo/global"
 )
 
@@ -24,4 +25,13 @@ func (r *RankingService) Ranking(limit int, category string) ([]redis.Z, error) 
 		return nil, err
 	}
 	return rankings, nil
+}
+
+func (r *RankingService) CleanRankings() {
+	if err := global.REDIS.Del(global.CONFIG.Redis.KeyRankMinutes).Err(); err != nil {
+		global.LOG.Error("cron - clean redis minutes ranking failed", zap.Error(err))
+	}
+	if err := global.REDIS.Del(global.CONFIG.Redis.KeyRankTodos).Err(); err != nil {
+		global.LOG.Error("cron - clean redis todos ranking failed", zap.Error(err))
+	}
 }
