@@ -1,5 +1,11 @@
+basePath: /api/v1
 info:
-  contact: {}
+  contact:
+    name: Ruizhe Zhang
+    url: https://github.com/nolanzzz
+  description: This is a api server for a shared task management tool
+  title: go-todo
+  version: "1.0"
 paths:
   /api/v1/Users/login:
     post:
@@ -93,6 +99,30 @@ paths:
           schema:
             type: string
       summary: Get all todo tasks of a specific user
+      tags:
+      - Todo
+  /api/v1/todo/done/:id:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"todo completed"}'
+          schema:
+            type: string
+      summary: Mark a task as completed
+      tags:
+      - Todo
+  /api/v1/todo/undone/:id:
+    put:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"status":200,"data":{},"msg":"todo undone"}'
+          schema:
+            type: string
+      summary: Undone a todo task
       tags:
       - Todo
 swagger: "2.0"

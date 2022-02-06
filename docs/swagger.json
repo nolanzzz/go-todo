@@ -1,8 +1,15 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a api server for a shared task management tool",
+        "title": "go-todo",
+        "contact": {
+            "name": "Ruizhe Zhang",
+            "url": "https://github.com/nolanzzz"
+        },
+        "version": "1.0"
     },
+    "basePath": "/api/v1",
     "paths": {
         "/api/v1/Users/login": {
             "post": {
@@ -148,6 +155,44 @@
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/todo/done/:id": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Mark a task as completed",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo completed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/todo/undone/:id": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Undone a todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo undone\"}",
                         "schema": {
                             "type": "string"
                         }

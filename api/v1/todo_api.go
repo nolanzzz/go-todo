@@ -14,13 +14,13 @@ type TodoApi struct{}
 var Todo *TodoApi
 
 // Create
-// @Tags Todo
-// @Summary Create new todo task
+// @Tags 	 Todo
+// @Summary  Create new todo task
 // @Security ApiKeyAuth
-// @Accept application/json
-// @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo create succeed"}"
-// @Router /api/v1/todo [post]
+// @Accept 	 application/json
+// @Produce  application/json
+// @Success  200 {string} string "{"status":200,"data":{},"msg":"todo create succeed"}"
+// @Router   /api/v1/todo [post]
 func (t *TodoApi) Create(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)
@@ -34,13 +34,13 @@ func (t *TodoApi) Create(c *gin.Context) {
 }
 
 // Update
-// @Tags Todo
-// @Summary Update an existing todo task
+// @Tags     Todo
+// @Summary  Update an existing todo task
 // @Security ApiKeyAuth
-// @Accept application/json
-// @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{},"msg":"todo update succeed"}"
-// @Router /api/v1/todo [put]
+// @Accept   application/json
+// @Produce  application/json
+// @Success  200 {string} string "{"status":200,"data":{},"msg":"todo update succeed"}"
+// @Router   /api/v1/todo [put]
 func (t *TodoApi) Update(c *gin.Context) {
 	var todo model.Todo
 	_ = c.ShouldBind(&todo)

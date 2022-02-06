@@ -17,7 +17,10 @@ var doc = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Ruizhe Zhang",
+            "url": "https://github.com/nolanzzz"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -173,6 +176,44 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/api/v1/todo/done/:id": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Mark a task as completed",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo completed\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/todo/undone/:id": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "Undone a todo task",
+                "responses": {
+                    "200": {
+                        "description": "{\"status\":200,\"data\":{},\"msg\":\"todo undone\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }`
@@ -188,12 +229,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
+	Version:     "1.0",
 	Host:        "",
-	BasePath:    "",
+	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "go-todo",
+	Description: "This is a api server for a shared task management tool",
 }
 
 type s struct{}
