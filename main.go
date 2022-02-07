@@ -17,15 +17,13 @@ import (
 // @in header
 // @name Authorization
 // @BasePath /api/v1
-func init() {
+func main() {
 	global.VP = core.Viper()    // initialize viper and load config
 	global.DB = core.Gorm()     // initialize gorm database connection
 	global.LOG = core.Zap()     // initialize logger
 	global.REDIS = core.Redis() // initialize Redis db
 	core.InitScheduler()        // start cron timer
-}
 
-func main() {
 	r := router.InitApiRouter()
 	_ = r.Run(global.CONFIG.System.Addr())
 }
