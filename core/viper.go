@@ -1,6 +1,7 @@
 package core
 
 import (
+	"flag"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -8,9 +9,16 @@ import (
 )
 
 func Viper() *viper.Viper {
-	config := "config.yaml"
+	var config string
+	flag.StringVar(&config, "c", "", "choose a config file")
+	flag.Parse()
+	if config == "" {
+		fmt.Println("using default config.yaml")
+		config = "config.yaml"
+	}
 	v := viper.New()
 	v.SetConfigFile(config)
+	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %s \n", err))
