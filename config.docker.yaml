@@ -8,9 +8,9 @@ mysql:
   host: mysql
   port: 3306
   config: charset=utf8mb4&parseTime=True&loc=Local
-  database: demo
+  database: todo
   username: root
-  password: ""
+  password: "admin"
 redis:
   database: 0
   addr: redis:6379
