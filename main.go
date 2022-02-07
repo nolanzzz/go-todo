@@ -22,7 +22,7 @@ func main() {
 	global.LOG = core.Zap()     // initialize logger
 	global.DB = core.Gorm()     // initialize gorm database connection
 	global.REDIS = core.Redis() // initialize Redis db
-	core.InitScheduler()        // start cron timer
+	core.InitScheduler()        // start cron scheduler
 
 	r := router.InitApiRouter()
 	_ = r.Run(global.CONFIG.System.Addr())
