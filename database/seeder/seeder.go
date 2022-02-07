@@ -1,6 +1,6 @@
 package seeder
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Seeder interface {
 	TableName() string
