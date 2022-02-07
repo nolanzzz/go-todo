@@ -1,0 +1,52 @@
+version: "1"
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '177.7.0.0/16'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: todo-server
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    networks:
+      network:
+        ipv4_address: 177.7.0.12
+    command: make migrate_up && ./app
+  mysql:
+    image: mysql:8.0.21
+    container_name: todo-mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_USER: root
+      MYSQL_DATABASE: demo
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      network:
+        ipv4_address: 177.7.0.13
+#    volumes:
+#      - ./init.sql:/data/application/init.sql
+  redis:
+    image: redis:6.2.6
+    container_name: todo-redis
+    restart: always
+    ports:
+      - "16379:6379"
+    networks:
+      network:
+        ipv4_address: 177.7.0.14

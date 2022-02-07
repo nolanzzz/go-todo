@@ -1,0 +1,25 @@
+database:
+  migrate: true
+  seed: true
+jwt:
+  expires-time: 172800 # 48 hours
+  signing-key: "zjJSnw$13jskjx"
+mysql:
+  host: mysql
+  port: 3306
+  config: charset=utf8mb4&parseTime=True&loc=Local
+  database: demo
+  username: root
+  password: ""
+redis:
+  database: 0
+  addr: redis:6379
+  password: ""
+  key-rank-todos: "rank_todos"
+  key-rank-minutes: "rank_minutes"
+system:
+  port: 8080
+  use-redis-jwt: true
+zap:
+  format: console
+  showline: true
