@@ -19,8 +19,8 @@ import (
 // @BasePath /api/v1
 func main() {
 	global.VP = core.Viper()    // initialize viper and load config
-	global.DB = core.Gorm()     // initialize gorm database connection
 	global.LOG = core.Zap()     // initialize logger
+	global.DB = core.Gorm()     // initialize gorm database connection
 	global.REDIS = core.Redis() // initialize Redis db
 	core.InitScheduler()        // start cron timer
 
