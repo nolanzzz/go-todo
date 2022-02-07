@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"todo/database/seeder"
@@ -31,8 +32,12 @@ func Gorm() *gorm.DB {
 }
 
 func Dsn() string {
-	// E.g. "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
-	return global.CONFIG.Mysql.Username + ":" + global.CONFIG.Mysql.Password +
-		"@tcp(" + global.CONFIG.Mysql.Host + ":" + global.CONFIG.Mysql.Port + ")/" +
-		global.CONFIG.Mysql.Database + "?" + global.CONFIG.Mysql.Config
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s",
+		global.CONFIG.Mysql.Username,
+		global.CONFIG.Mysql.Password,
+		global.CONFIG.Mysql.Host,
+		global.CONFIG.Mysql.Port,
+		global.CONFIG.Mysql.Database,
+		global.CONFIG.Mysql.Config,
+	)
 }
