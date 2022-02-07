@@ -1,13 +1,13 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type Todo struct {
 	gorm.Model
-	Title       string `json:"title" gorm:"not null"`
-	Description string `json:"description" gorm:"null"`
+	Title       string `json:"title" gorm:"type:varchar(255); not null"`
+	Description string `json:"description" gorm:"type:text; null"`
 	Completed   int    `json:"completed" gorm:"default:0"`
 	TimeSpent   int    `json:"time_spent" gorm:"comment:'Total minutes spent'"`
 	UserID      uint   `json:"user_id"`
