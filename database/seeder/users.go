@@ -1,6 +1,7 @@
 package seeder
 
 import (
+	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"todo/global"
@@ -33,4 +34,11 @@ func (u *users) Seed(db *gorm.DB) error {
 
 func (u *users) TableName() string {
 	return "users"
+}
+
+func (u *users) CheckDataExist(db *gorm.DB) bool {
+	if errors.Is(db.First(&model.User{}, "username = ?", "user9").Error, gorm.ErrRecordNotFound) {
+		return false
+	}
+	return true
 }
