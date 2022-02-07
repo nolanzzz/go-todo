@@ -40,12 +40,14 @@ func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
 
 func (s *TodoService) GetUserAll(userID string) ([]model.TodoResponse, error) {
 	var items []model.Todo
-	user := &model.User{}
+	var user model.User
 	err := global.DB.Find(&user, "id = ?", userID).Error
 	if err != nil {
 		return nil, err
 	}
-	global.DB.Model(user).Related(&items)
+	if err = global.DB.Model(&user).Association("Todos").Find(&items); err != nil {
+		return nil, err
+	}
 	return s.todoResponses(items), nil
 }
 
@@ -81,7 +83,7 @@ func (s *TodoService) UpdateStatus(id string, userID uint, status int) error {
 		return err
 	}
 	var user model.User
-	if err := global.DB.Model(&todo).Association("User").Find(&user).Error; err != nil {
+	if err := global.DB.First(&user, "id = ?", userID).Error; err != nil {
 		global.LOG.Error("user not found")
 	}
 	// Update ranking stats in redis
