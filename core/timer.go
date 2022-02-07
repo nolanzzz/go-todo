@@ -7,7 +7,7 @@ import (
 	"todo/service"
 )
 
-func InitTimer() {
+func InitScheduler() {
 	c := cron.New()
 	global.LOG.Info("cron jobs initialized")
 	err := c.AddFunc("@daily", func() { // midnight - 00***
