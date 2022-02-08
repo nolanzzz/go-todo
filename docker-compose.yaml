@@ -1,10 +1,10 @@
-#version: "1"
+version: "3"
 networks:
   network:
     ipam:
       driver: default
       config:
-        - subnet: '177.7.0.0/16'
+        - subnet: 177.7.0.0/16
 services:
   server:
     build:
