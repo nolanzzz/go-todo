@@ -12,7 +12,7 @@ func InitScheduler() {
 	global.LOG.Info("cron jobs initialized")
 	var err error
 	// Clean rankings in Redis at midgnight everyday
-	if err = c.AddFunc("@daily", func() { // midnight - 00***
+	if err = c.AddFunc("@daily", func() {
 		global.LOG.Info("run CleanRankings")
 		service.RankingServiceApp.CleanRankings()
 	}); err != nil {
@@ -21,7 +21,7 @@ func InitScheduler() {
 	}
 
 	// Generate 5 random todos every 10 minutes
-	if err = c.AddFunc("0 */10 * * *", func() { // midnight - 00***
+	if err = c.AddFunc("0 */10 * * *", func() {
 		global.LOG.Info("run GenerateTodos")
 		service.TodoServiceApp.GenerateTodos(5)
 	}); err != nil {
@@ -30,7 +30,7 @@ func InitScheduler() {
 	}
 
 	// Complete todos from a random user every 30 minutes
-	if err = c.AddFunc("0 */30 * * *", func() { // midnight - 00***
+	if err = c.AddFunc("0 */30 * * *", func() {
 		global.LOG.Info("run GenerateTodos")
 		service.TodoServiceApp.CompleteTodos()
 	}); err != nil {
