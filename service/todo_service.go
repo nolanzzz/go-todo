@@ -124,7 +124,6 @@ func (s *TodoService) GenerateTodos(count int) {
 	rand.Seed(time.Now().Unix())
 	for i := 0; i < count; i++ {
 		userID = rand.Intn(9) + 1
-		global.LOG.Debug("userID", zap.Int("userID", userID))
 		title := "Todo title at " + time.Now().Format("2006-01-02 15:04:05")
 		description := "Description at " + time.Now().Format("2006-01-02 15:04:05")
 		err := s.Create(model.Todo{Title: title, Description: description, UserID: uint(userID)})
@@ -140,7 +139,7 @@ func (s *TodoService) CompleteTodos() {
 	var err error
 	rand.Seed(time.Now().Unix())
 	userID := rand.Intn(9) + 1
-	if err = global.DB.Find(&todos, "user_id = ?", userID).Error; err != nil {
+	if err = global.DB.Where("user_id = ?", userID).Where("completed = ?", 0).Find(&todos).Error; err != nil {
 		global.LOG.Error("CompleteTodos failed", zap.Error(err))
 		return
 	}
