@@ -20,5 +20,14 @@ func Redis() (client *redis.Client) {
 	} else {
 		global.LOG.Info("redis connect ping response", zap.String("pong", pong))
 	}
+	if err = cleanExistingData(client); err != nil {
+		global.LOG.Error("reset redis database failed", zap.Error(err))
+		panic("Failed to reset Redis: " + err.Error())
+	}
 	return client
+}
+
+func cleanExistingData(client *redis.Client) (err error) {
+	err = client.Del(global.CONFIG.Redis.KeyRankTodos, global.CONFIG.Redis.KeyRankMinutes).Err()
+	return err
 }

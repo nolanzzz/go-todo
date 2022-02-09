@@ -20,8 +20,8 @@ func InitScheduler() {
 		return
 	}
 
-	// Generate 5 random todos every 5 minutes
-	if err = c.AddFunc("0 */5 * * *", func() { // midnight - 00***
+	// Generate 5 random todos every 10 minutes
+	if err = c.AddFunc("0 */10 * * *", func() { // midnight - 00***
 		global.LOG.Info("run GenerateTodos")
 		service.TodoServiceApp.GenerateTodos(5)
 	}); err != nil {
@@ -29,8 +29,8 @@ func InitScheduler() {
 		return
 	}
 
-	// Complete todos from a random user every 20 minutes
-	if err = c.AddFunc("0 */20 * * *", func() { // midnight - 00***
+	// Complete todos from a random user every 30 minutes
+	if err = c.AddFunc("0 */30 * * *", func() { // midnight - 00***
 		global.LOG.Info("run GenerateTodos")
 		service.TodoServiceApp.CompleteTodos()
 	}); err != nil {
