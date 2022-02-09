@@ -1,5 +1,5 @@
-## 1. 介绍
-### 1.1 项目简介
+# 1. 介绍
+## 1.1 项目简介
 > Go-TODO提供一个基于Go语言和`Gin`框架开发的共享TODO待办事项管理软件的后端api，支持Docker快速部署
 
 主要api功能：
@@ -16,7 +16,7 @@
 
 测试密码：12345
 
-### 1.2 技术选型
+## 1.2 技术选型
 - 语言：Golang
 - 后端：用 [Gin](https://gin-gonic.com) 快速搭建Restful风格的API
 - 数据库：
@@ -28,9 +28,9 @@
 - 配置文件：使用 [Viper](https://github.com/spf13/viper) 实现yaml格式的配置文件
 - 日志：使用 [zap](https://github.com/uber-go/zap) 实现日志记录
 
-## 2. 使用说明
+# 2. 使用说明
 
-### 2.1 项目运行
+## 2.1 项目运行
 
 ```bash
 # 克隆项目
@@ -43,14 +43,14 @@ go build -o server main.go
 ./server -c config.yaml
 ```
 
-### 2.2 Docker部署
+## 2.2 Docker部署
 本项目含Dockerfile和包含`MySQL`以及`Redis`的docker-compose配置文件，可使用Docker一键快速部署：
 ```bash
 cd go-todo
 docker-compose up
 ```
 
-### 2.3 `Swagger`自动化API文档
+## 2.3 `Swagger`自动化API文档
 项目已含最新docs，若需修改并重新生成API文档：
 ```bash
 cd go-todo

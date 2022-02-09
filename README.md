@@ -1,5 +1,5 @@
-## 1. Introduction
-### 1.1 Project Introduction
+# 1. Introduction
+## 1.1 Project Introduction
 > Go-TODO provides a backend api of a shared TODO List app based on Golang and the `Gin` framework. It also supports quick deployment with Docker.
 
 Major api functions:
@@ -16,7 +16,7 @@ Testing `username`: `user1`
 
 Testing password: `12345`
 
-### 1.2 Tech Stacks
+## 1.2 Tech Stacks
 - Language：Golang
 - Backend：RESTful api built with [Gin](https://gin-gonic.com)
 - Database：
@@ -28,9 +28,9 @@ Testing password: `12345`
 - Config：Using [Viper](https://github.com/spf13/viper) to implement yaml configuration files
 - Log：Using [zap](https://github.com/uber-go/zap) for logging
 
-## 2. Getting Started
+# 2. Getting Started
 
-### 2.1 Setup
+## 2.1 Setup
 
 ```bash
 # Clone the repo
@@ -43,14 +43,14 @@ go build -o server main.go
 ./server -c config.yaml
 ```
 
-### 2.2 Docker Deployment
+## 2.2 Docker Deployment
 This project includes a base `Dockerfile` as well as a `docker-compose` config file that includes `MySQL` and `Redis` services. Use Docker for quick deployment:
 ```bash
 cd go-todo
 docker-compose up
 ```
 
-### 2.3 API Docs Auto-Generation using `Swagger`
+## 2.3 API Docs Auto-Generation using `Swagger`
 The repo includes the most recent docs. Re-generate when need to make changes:
 ```bash
 cd go-todo
