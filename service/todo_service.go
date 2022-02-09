@@ -4,6 +4,7 @@ import (
 	"errors"
 	"go.uber.org/zap"
 	"math/rand"
+	"strconv"
 	"time"
 	"todo/global"
 	"todo/model"
@@ -120,17 +121,32 @@ func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 func (s *TodoService) GenerateTodos(count int) {
 	// Create new tasks for demo users
 	var userID int
-	var tasks []model.Todo
 	rand.Seed(time.Now().Unix())
 	for i := 0; i < count; i++ {
 		userID = rand.Intn(9) + 1
 		global.LOG.Debug("userID", zap.Int("userID", userID))
-		title := "Todo title at " + time.Now().String()
-		description := "Description at " + time.Now().String()
-		tasks = append(tasks, model.Todo{Title: title, Description: description, UserID: uint(userID)})
+		title := "Todo title at " + time.Now().Format("2006-01-02 15:04:05")
+		description := "Description at " + time.Now().Format("2006-01-02 15:04:05")
+		err := s.Create(model.Todo{Title: title, Description: description, UserID: uint(userID)})
+		if err != nil {
+			global.LOG.Error("generating todo failed", zap.Error(err))
+		}
 	}
-	err := global.DB.Create(&tasks).Error
-	if err != nil {
-		global.LOG.Error("generating todos failed", zap.Error(err))
+}
+
+func (s *TodoService) CompleteTodos() {
+	// Randomly pick a demo user, and complete all their todos
+	var todos []model.Todo
+	var err error
+	rand.Seed(time.Now().Unix())
+	userID := rand.Intn(9) + 1
+	if err = global.DB.Find(&todos, "user_id = ?", userID).Error; err != nil {
+		global.LOG.Error("CompleteTodos failed", zap.Error(err))
+		return
+	}
+	for _, todo := range todos {
+		if err = s.UpdateStatus(strconv.Itoa(int(todo.ID)), todo.UserID, 1); err != nil {
+			global.LOG.Error("CompleteTodos failed", zap.Error(err))
+		}
 	}
 }
