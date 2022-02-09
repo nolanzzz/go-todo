@@ -1,4 +1,6 @@
-# 1. 介绍
+[English](./README.md) | 简体中文
+
+# 介绍
 ## 1.1 项目简介
 > Go-TODO提供一个基于Go语言和`Gin`框架开发的共享TODO待办事项管理软件的后端api，支持Docker快速部署
 
@@ -28,7 +30,7 @@
 - 配置文件：使用 [Viper](https://github.com/spf13/viper) 实现yaml格式的配置文件
 - 日志：使用 [zap](https://github.com/uber-go/zap) 实现日志记录
 
-# 2. 使用说明
+# 使用说明
 
 ## 2.1 项目运行
 

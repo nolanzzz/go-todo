@@ -1,4 +1,6 @@
-# 1. Introduction
+English | [简体中文](./README-CN.md)
+
+# Introduction
 ## 1.1 Project Introduction
 > Go-TODO provides a backend api of a shared TODO List app based on Golang and the `Gin` framework. It also supports quick deployment with Docker.
 
@@ -28,7 +30,7 @@ Testing password: `12345`
 - Config：Using [Viper](https://github.com/spf13/viper) to implement yaml configuration files
 - Log：Using [zap](https://github.com/uber-go/zap) for logging
 
-# 2. Getting Started
+# Getting Started
 
 ## 2.1 Setup
 
