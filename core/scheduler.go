@@ -10,13 +10,41 @@ import (
 func InitScheduler() {
 	c := cron.New()
 	global.LOG.Info("cron jobs initialized")
-	err := c.AddFunc("@daily", func() { // midnight - 00***
+	var err error
+	// Clean rankings in Redis at midgnight everyday
+	if err = c.AddFunc("@daily", func() { // midnight - 00***
 		global.LOG.Info("run CleanRankings")
 		service.RankingServiceApp.CleanRankings()
-	})
-	if err != nil {
-		global.LOG.Error("adding cron job failed", zap.Error(err))
+	}); err != nil {
+		global.LOG.Error("adding cron job failed", zap.Error(err), zap.String("job", "CleanRankings"))
 		return
 	}
+
+	// Generate 5 random todos every 5 minutes
+	if err = c.AddFunc("0 */5 * * *", func() { // midnight - 00***
+		global.LOG.Info("run GenerateTodos")
+		service.TodoServiceApp.GenerateTodos(5)
+	}); err != nil {
+		global.LOG.Error("adding cron job failed", zap.Error(err), zap.String("job", "GenerateTodos"))
+		return
+	}
+
+	// Complete todos from a random user every 20 minutes
+	if err = c.AddFunc("0 */20 * * *", func() { // midnight - 00***
+		global.LOG.Info("run GenerateTodos")
+		service.TodoServiceApp.CompleteTodos()
+	}); err != nil {
+		global.LOG.Error("adding cron job failed", zap.Error(err), zap.String("job", "CompleteTodos"))
+		return
+	}
+
 	go c.Start()
+
+	//t1 := time.NewTimer(time.Second * 5)
+	//for {
+	//	select {
+	//	case <-t1.C:
+	//		t1.Reset(time.Second * 5)
+	//	}
+	//}
 }
