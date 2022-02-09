@@ -24,6 +24,7 @@ func (u *users) Seed(db *gorm.DB) error {
 		{Username: "user7", Password: utils.CreatePass("12345")},
 		{Username: "user8", Password: utils.CreatePass("12345")},
 		{Username: "user9", Password: utils.CreatePass("12345")},
+		{Username: "user10", Password: utils.CreatePass("12345")},
 	}
 	if err := db.Create(&records).Error; err != nil {
 		global.LOG.Error("user seeder failed", zap.Error(err))

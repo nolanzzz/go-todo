@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"go.uber.org/zap"
+	"math/rand"
 	"time"
 	"todo/global"
 	"todo/model"
@@ -114,4 +115,22 @@ func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 		})
 	}
 	return responses
+}
+
+func (s *TodoService) GenerateTodos(count int) {
+	// Create new tasks for demo users
+	var userID int
+	var tasks []model.Todo
+	rand.Seed(time.Now().Unix())
+	for i := 0; i < count; i++ {
+		userID = rand.Intn(9) + 1
+		global.LOG.Debug("userID", zap.Int("userID", userID))
+		title := "Todo title at " + time.Now().String()
+		description := "Description at " + time.Now().String()
+		tasks = append(tasks, model.Todo{Title: title, Description: description, UserID: uint(userID)})
+	}
+	err := global.DB.Create(&tasks).Error
+	if err != nil {
+		global.LOG.Error("generating todos failed", zap.Error(err))
+	}
 }
