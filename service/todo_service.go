@@ -59,7 +59,7 @@ func (s *TodoService) Get(id string) (model.TodoResponse, error) {
 	if err := global.DB.First(&item, id).Error; err != nil {
 		return resp, err
 	}
-	resp = model.TodoResponse{ID: item.ID, Title: item.Title, Completed: item.Completed}
+	resp = model.TodoResponse{ID: item.ID, Title: item.Title, UserID: item.UserID, Completed: item.Completed}
 	return resp, nil
 }
 
@@ -110,6 +110,7 @@ func (s *TodoService) todoResponses(items []model.Todo) []model.TodoResponse {
 	for _, item := range items {
 		responses = append(responses, model.TodoResponse{
 			ID:          item.ID,
+			UserID:      item.UserID,
 			Title:       item.Title,
 			Description: item.Description,
 			Completed:   item.Completed,
