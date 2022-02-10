@@ -59,7 +59,7 @@ func (t *TodoApi) Update(c *gin.Context) {
 // @Param page query int false "page number"
 // @Param pageSize query int false "page size"
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
+// @Success 200 {string} string "{"status":200,"data":{"items":{},"total":int,"page":int,"pageSize":int},"msg":"succeed"}"
 // @Router /api/v1/todo [get]
 func (t *TodoApi) GetList(c *gin.Context) {
 	var page, pageSize int
@@ -91,7 +91,7 @@ func (t *TodoApi) GetList(c *gin.Context) {
 // @Param page query int false "page number"
 // @Param pageSize query int false "page size"
 // @Produce application/json
-// @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
+// @Success 200 {string} string "{"status":200,"data":{"items":{},"total":int,"page":int,"pageSize":int},"msg":"succeed"}"
 // @Param   userID path int true "id of user"
 // @Router /api/v1/todo/by/:userID [get]
 func (t *TodoApi) GetListByUser(c *gin.Context) {
