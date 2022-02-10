@@ -6,13 +6,13 @@
 
 主要api功能：
 - 用户注册/登录
-- 新建/修改/完成TODO事项
+- 新建/修改/完成TODO事项，分页查看所有或是某用户的TODO事项清单
 - TODO事项所有人可见，只有创建者有权修改，达到与小伙伴们互相督促的效果
 - 动态更新的当日完成事项数和总完成时间的排行，零点清零，同样达到与小伙伴们互相督促的效果
 
 在线api文档: [http://34.96.161.126/swagger/index.html](http://34.96.161.126/swagger/index.html)
 
-在线测试示例：GET - [http://34.96.161.126/api/v1/ranking/minutes/10](http://34.96.161.126/api/v1/ranking/minutes/10)
+在线测试示例：GET - [http://34.96.161.126/api/v1/ranking/todos](http://34.96.161.126/api/v1/ranking/todos)
 
 测试用户名：user1
 

@@ -6,13 +6,13 @@ English | [简体中文](./README-CN.md)
 
 Major api functions:
 - User register/login
-- Create/Update/Done/Undone TODO events
+- Create/Update/Done/Undone TODO events, and view list of all or by a specific user TODO tasks with paging function
 - All TODO events are public, however, only the creator can make changes. It's supposed to encourage users by seeing friends' progresses.
 - Dynamically updated user rankings (by task numbers and total amount of minutes). Rankings are reset at midnight everyday.
 
 Online api docs: [http://34.96.161.126/swagger/index.html](http://34.96.161.126/swagger/index.html)
 
-Online api demo：GET - [http://34.96.161.126/api/v1/ranking/minutes/10](http://34.96.161.126/api/v1/ranking/minutes/10)
+Online api demo：GET - [http://34.96.161.126/api/v1/ranking/todos](http://34.96.161.126/api/v1/ranking/todos)
 
 Testing `username`: `user1`
 
