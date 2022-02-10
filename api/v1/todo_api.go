@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"strconv"
 	"todo/global"
 	"todo/model"
 	"todo/model/response"
@@ -52,20 +53,36 @@ func (t *TodoApi) Update(c *gin.Context) {
 	}
 }
 
-// GetAll
+// GetList
 // @Tags Todo
-// @Summary Get all todo tasks
+// @Summary Get list of tasks separated by pages
+// @Param page query int false "page number"
+// @Param pageSize query int false "page size"
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Router /api/v1/todo [get]
-func (t *TodoApi) GetAll(c *gin.Context) {
-	todos, err := service.TodoServiceApp.GetAll()
+func (t *TodoApi) GetList(c *gin.Context) {
+	var page, pageSize int
+	page, _ = strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ = strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	total, err := service.TodoServiceApp.TotalCount()
 	if err != nil {
-		global.LOG.Error("todo get all failed", zap.Error(err))
+		global.LOG.Error("get total todo count failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
 	}
-	response.OkWithData(c, gin.H{"items": todos})
+	if todos, err := service.TodoServiceApp.GetList(page, pageSize); err != nil {
+		global.LOG.Error("todo get all failed", zap.Error(err))
+		response.FailWithMessage(c, err.Error())
+		return
+	} else {
+		response.OkWithData(c, gin.H{
+			"items":    todos,
+			"total":    total,
+			"page":     page,
+			"pageSize": pageSize,
+		})
+	}
 }
 
 // GetUserAll

@@ -17,7 +17,7 @@ func InitApiRouter() *gin.Engine {
 	TodoGroup := router.Group("/api/v1/todo")
 	{
 		TodoGroup.GET("/:id", api.Todo.Get)
-		TodoGroup.GET("/", api.Todo.GetAll)
+		TodoGroup.GET("/", api.Todo.GetList)
 		TodoGroup.GET("/by/:userID", api.Todo.GetUserAll)
 
 		TodoAuthGroup := TodoGroup.Use(middleware.Auth())

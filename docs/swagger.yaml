@@ -73,6 +73,15 @@ paths:
       - Ranking
   /api/v1/todo:
     get:
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: integer
+      - description: page size
+        in: query
+        name: pageSize
+        type: integer
       produces:
       - application/json
       responses:
@@ -80,7 +89,7 @@ paths:
           description: '{"status":200,"data":{"items":{}},"msg":"succeed"}'
           schema:
             type: string
-      summary: Get all todo tasks
+      summary: Get list of tasks separated by pages
       tags:
       - Todo
     post:

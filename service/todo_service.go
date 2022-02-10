@@ -28,16 +28,24 @@ func (s *TodoService) Update(todo model.Todo) error {
 	return res.Error
 }
 
-func (s *TodoService) GetAll() ([]model.TodoResponse, error) {
+func (s *TodoService) GetList(page int, pageSize int) ([]model.TodoResponse, error) {
 	var items []model.Todo
-	res := global.DB.Find(&items)
-	if res.Error != nil {
-		return nil, res.Error
+	offset := (page - 1) * pageSize
+	if err := global.DB.Limit(pageSize).Offset(offset).Find(&items).Error; err != nil {
+		return nil, err
 	}
 	if len(items) == 0 {
 		return []model.TodoResponse{}, nil
 	}
 	return s.todoResponses(items), nil
+}
+
+func (s *TodoService) TotalCount() (int, error) {
+	var total int64
+	if err := global.DB.Model(&model.Todo{}).Count(&total).Error; err != nil {
+		return 0, err
+	}
+	return int(total), nil
 }
 
 func (s *TodoService) GetUserAll(userID string) ([]model.TodoResponse, error) {

@@ -119,7 +119,21 @@
                 "tags": [
                     "Todo"
                 ],
-                "summary": "Get all todo tasks",
+                "summary": "Get list of tasks separated by pages",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
