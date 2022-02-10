@@ -35,13 +35,12 @@ paths:
       summary: Register new account
       tags:
       - Users
-  /api/v1/ranking/minutes/:limit:
+  /api/v1/ranking/minutes:
     get:
       parameters:
-      - description: number of records
-        in: path
+      - description: get top n records
+        in: query
         name: limit
-        required: true
         type: integer
       produces:
       - application/json
@@ -53,13 +52,12 @@ paths:
       summary: Get ranking by total sum of minutes
       tags:
       - Ranking
-  /api/v1/ranking/todos/:limit:
+  /api/v1/ranking/todos:
     get:
       parameters:
-      - description: number of records
-        in: path
+      - description: get top n records
+        in: query
         name: limit
-        required: true
         type: integer
       produces:
       - application/json
@@ -86,7 +84,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"items":{}},"msg":"succeed"}'
+          description: '{"status":200,"data":{"items":{},"total":int,"page":int,"pageSize":int},"msg":"succeed"}'
           schema:
             type: string
       summary: Get list of tasks separated by pages
@@ -143,6 +141,14 @@ paths:
   /api/v1/todo/by/:userID:
     get:
       parameters:
+      - description: page number
+        in: query
+        name: page
+        type: integer
+      - description: page size
+        in: query
+        name: pageSize
+        type: integer
       - description: id of user
         in: path
         name: userID
@@ -152,10 +158,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: '{"status":200,"data":{"items":{}},"msg":"succeed"}'
+          description: '{"status":200,"data":{"items":{},"total":int,"page":int,"pageSize":int},"msg":"succeed"}'
           schema:
             type: string
-      summary: Get all todo tasks of a specific user
+      summary: Get list of tasks separated by pages from user
       tags:
       - Todo
   /api/v1/todo/done/:id:

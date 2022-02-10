@@ -70,7 +70,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/ranking/minutes/:limit": {
+        "/api/v1/ranking/minutes": {
             "get": {
                 "produces": [
                     "application/json"
@@ -82,10 +82,9 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "number of records",
+                        "description": "get top n records",
                         "name": "limit",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -98,7 +97,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1/ranking/todos/:limit": {
+        "/api/v1/ranking/todos": {
             "get": {
                 "produces": [
                     "application/json"
@@ -110,10 +109,9 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "number of records",
+                        "description": "get top n records",
                         "name": "limit",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -151,7 +149,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
+                        "description": "{\"status\":200,\"data\":{\"items\":{},\"total\":int,\"page\":int,\"pageSize\":int},\"msg\":\"succeed\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -245,8 +243,20 @@ var doc = `{
                 "tags": [
                     "Todo"
                 ],
-                "summary": "Get all todo tasks of a specific user",
+                "summary": "Get list of tasks separated by pages from user",
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
                     {
                         "type": "integer",
                         "description": "id of user",
@@ -257,7 +267,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "{\"status\":200,\"data\":{\"items\":{}},\"msg\":\"succeed\"}",
+                        "description": "{\"status\":200,\"data\":{\"items\":{},\"total\":int,\"page\":int,\"pageSize\":int},\"msg\":\"succeed\"}",
                         "schema": {
                             "type": "string"
                         }
