@@ -38,9 +38,7 @@ func InitApiRouter() *gin.Engine {
 	RankingGroup := router.Group("/api/v1/ranking")
 	{
 		RankingGroup.GET("/todos", api.Ranking.RankingByTodos)
-		RankingGroup.GET("/todos/:limit", api.Ranking.RankingByTodos)
 		RankingGroup.GET("/minutes", api.Ranking.RankingByMinutes)
-		RankingGroup.GET("/minutes/:limit", api.Ranking.RankingByMinutes)
 	}
 
 	return router

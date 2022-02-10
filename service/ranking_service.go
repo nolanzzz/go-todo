@@ -11,9 +11,6 @@ type RankingService struct{}
 var RankingServiceApp RankingService
 
 func (r *RankingService) Ranking(limit int, category string, order string) (rankings []redis.Z, err error) {
-	if limit < 10 {
-		limit = 10 // get top 10 records at least
-	}
 	var key string
 	if category == "todos" {
 		key = global.CONFIG.Redis.KeyRankTodos
