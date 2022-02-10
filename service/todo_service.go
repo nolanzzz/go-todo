@@ -135,13 +135,13 @@ func (s *TodoService) GenerateTodos(count int) {
 	}
 }
 
-func (s *TodoService) CompleteTodos() {
+func (s *TodoService) CompleteTodos(limit int) {
 	// Randomly pick a demo user, and complete all their todos
 	var todos []model.Todo
 	var err error
 	rand.Seed(time.Now().Unix())
 	userID := rand.Intn(9) + 1
-	if err = global.DB.Where("user_id = ?", userID).Where("completed = ?", 0).Find(&todos).Error; err != nil {
+	if err = global.DB.Where("user_id = ?", userID).Where("completed = ?", 0).Limit(limit).Find(&todos).Error; err != nil {
 		global.LOG.Error("CompleteTodos failed", zap.Error(err))
 		return
 	}
