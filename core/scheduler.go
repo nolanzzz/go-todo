@@ -29,10 +29,10 @@ func InitScheduler() {
 		return
 	}
 
-	// Complete todos from a random user every 10 minutes
-	if err = c.AddFunc("0 */10 * * *", func() {
+	// Complete 10 todos from a random user every 20 minutes
+	if err = c.AddFunc("0 */20 * * *", func() {
 		global.LOG.Info("run GenerateTodos")
-		service.TodoServiceApp.CompleteTodos(5)
+		service.TodoServiceApp.CompleteTodos(10)
 	}); err != nil {
 		global.LOG.Error("adding cron job failed", zap.Error(err), zap.String("job", "CompleteTodos"))
 		return
