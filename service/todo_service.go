@@ -34,28 +34,21 @@ func (s *TodoService) GetList(page int, pageSize int) ([]model.TodoResponse, err
 	if err := global.DB.Limit(pageSize).Offset(offset).Find(&items).Error; err != nil {
 		return nil, err
 	}
-	if len(items) == 0 {
-		return []model.TodoResponse{}, nil
-	}
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) TotalCount() (int, error) {
-	var total int64
-	if err := global.DB.Model(&model.Todo{}).Count(&total).Error; err != nil {
-		return 0, err
-	}
-	return int(total), nil
-}
-
-func (s *TodoService) GetUserAll(userID string) ([]model.TodoResponse, error) {
+func (s *TodoService) GetListByUser(userID int, page int, pageSize int) ([]model.TodoResponse, error) {
 	var items []model.Todo
 	var user model.User
-	err := global.DB.Find(&user, "id = ?", userID).Error
-	if err != nil {
-		return nil, err
+	res := global.DB.Find(&user, "id = ?", userID)
+	if res.Error != nil {
+		return nil, res.Error
 	}
-	if err = global.DB.Model(&user).Association("Todos").Find(&items); err != nil {
+	if user.ID == 0 {
+		return nil, errors.New("user not exists")
+	}
+	offset := (page - 1) * pageSize
+	if err := global.DB.Limit(pageSize).Offset(offset).Where("user_id = ?", userID).Find(&items).Error; err != nil {
 		return nil, err
 	}
 	return s.todoResponses(items), nil
@@ -157,4 +150,18 @@ func (s *TodoService) CompleteTodos() {
 			global.LOG.Error("CompleteTodos failed", zap.Error(err))
 		}
 	}
+}
+
+func (s *TodoService) TotalCount(userID int) (int, error) {
+	var total int64
+	var err error
+	if userID == 0 {
+		err = global.DB.Model(&model.Todo{}).Count(&total).Error
+	} else {
+		err = global.DB.Model(&model.Todo{}).Where("user_id = ?", userID).Count(&total).Error
+	}
+	if err != nil {
+		return 0, err
+	}
+	return int(total), nil
 }

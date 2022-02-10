@@ -65,42 +65,58 @@ func (t *TodoApi) GetList(c *gin.Context) {
 	var page, pageSize int
 	page, _ = strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ = strconv.Atoi(c.DefaultQuery("pageSize", "10"))
-	total, err := service.TodoServiceApp.TotalCount()
+	total, err := service.TodoServiceApp.TotalCount(0)
 	if err != nil {
 		global.LOG.Error("get total todo count failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
 	}
-	if todos, err := service.TodoServiceApp.GetList(page, pageSize); err != nil {
-		global.LOG.Error("todo get all failed", zap.Error(err))
+	todos, err := service.TodoServiceApp.GetList(page, pageSize)
+	if err != nil {
+		global.LOG.Error("get todo list failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
-	} else {
-		response.OkWithData(c, gin.H{
-			"items":    todos,
-			"total":    total,
-			"page":     page,
-			"pageSize": pageSize,
-		})
 	}
+	response.OkWithData(c, gin.H{
+		"items":    todos,
+		"total":    total,
+		"page":     page,
+		"pageSize": pageSize,
+	})
 }
 
-// GetUserAll
+// GetListByUser
 // @Tags Todo
-// @Summary Get all todo tasks of a specific user
+// @Summary Get list of tasks separated by pages from user
+// @Param page query int false "page number"
+// @Param pageSize query int false "page size"
 // @Produce application/json
 // @Success 200 {string} string "{"status":200,"data":{"items":{}},"msg":"succeed"}"
 // @Param   userID path int true "id of user"
 // @Router /api/v1/todo/by/:userID [get]
-func (t *TodoApi) GetUserAll(c *gin.Context) {
-	userID := c.Param("userID")
-	items, err := service.TodoServiceApp.GetUserAll(userID)
+func (t *TodoApi) GetListByUser(c *gin.Context) {
+	var page, pageSize int
+	userID, _ := strconv.Atoi(c.Param("userID"))
+	page, _ = strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ = strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	total, err := service.TodoServiceApp.TotalCount(userID)
 	if err != nil {
-		global.LOG.Error("todo get user all failed", zap.Error(err))
+		global.LOG.Error("get user's todo count failed", zap.Error(err))
 		response.FailWithMessage(c, err.Error())
 		return
 	}
-	response.OkWithData(c, gin.H{"items": items})
+	todos, err := service.TodoServiceApp.GetListByUser(userID, page, pageSize)
+	if err != nil {
+		global.LOG.Error("get todo list by user failed", zap.Error(err))
+		response.FailWithMessage(c, err.Error())
+		return
+	}
+	response.OkWithData(c, gin.H{
+		"items":    todos,
+		"total":    total,
+		"page":     page,
+		"pageSize": pageSize,
+	})
 }
 
 // Get
