@@ -54,7 +54,7 @@ func (s *TodoService) GetListByUser(userID int, page int, pageSize int) ([]model
 	return s.todoResponses(items), nil
 }
 
-func (s *TodoService) Get(id string) (model.TodoResponse, error) {
+func (s *TodoService) Get(id int) (model.TodoResponse, error) {
 	var item model.Todo
 	var resp model.TodoResponse
 	if err := global.DB.First(&item, id).Error; err != nil {

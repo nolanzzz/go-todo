@@ -127,7 +127,12 @@ func (t *TodoApi) GetListByUser(c *gin.Context) {
 // @Param   id path int true "id of task"
 // @Router /api/v1/todo/:id [get]
 func (t *TodoApi) Get(c *gin.Context) {
-	id := c.Param("id")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		global.LOG.Error("invalid item id", zap.Error(err))
+		response.FailWithMessage(c, "invalid item id")
+		return
+	}
 	item, err := service.TodoServiceApp.Get(id)
 	if err != nil {
 		global.LOG.Error("todo get failed", zap.Error(err))
