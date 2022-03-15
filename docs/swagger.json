@@ -4,7 +4,7 @@
         "description": "This is a api server for a shared task management tool",
         "title": "go-todo",
         "contact": {
-            "name": "Ruizhe Zhang",
+            "name": "Nolan Zhang",
             "url": "https://github.com/nolanzzz"
         },
         "version": "1.0"

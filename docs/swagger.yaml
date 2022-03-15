@@ -1,7 +1,7 @@
 basePath: /api/v1
 info:
   contact:
-    name: Ruizhe Zhang
+    name: Nolan Zhang
     url: https://github.com/nolanzzz
   description: This is a api server for a shared task management tool
   title: go-todo

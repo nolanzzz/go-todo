@@ -10,7 +10,7 @@ import (
 // @version 1.0
 // @description This is a api server for a shared task management tool
 
-// @contact.name Ruizhe Zhang
+// @contact.name Nolan Zhang
 // @contact.url https://github.com/nolanzzz
 
 // @securityDefinitions.apikey ApiKeyAuth
